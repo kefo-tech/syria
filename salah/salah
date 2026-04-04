@@ -1,1 +1,828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مواقيت الصلاة | KeFo.tech</title>
+  <meta name="description" content="مواقيت الصلاة اليومية بتصميم إسلامي أنيق مع دعم تعدد اللغات والكشف التلقائي للغة المستخدم." />
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+    :root{
+      --bg1:#0f2f23;
+      --bg2:#153d2d;
+      --gold:#d4af37;
+      --gold-soft:#e7c866;
+      --cream:#f7f2e7;
+      --line:rgba(212,175,55,.22);
+      --text:#183126;
+      --muted:#5f6f66;
+      --white:#ffffff;
+      --shadow:0 14px 45px rgba(0,0,0,.22);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    body{
+      font-family: Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,.12), transparent 28%),
+        radial-gradient(circle at top left, rgba(255,255,255,.05), transparent 22%),
+        linear-gradient(160deg, var(--bg1), #0b2119 52%, var(--bg2));
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    .wrap{
+      width:min(100%, 820px);
+      margin:0 auto;
+      padding:28px 14px 18px;
+    }
+
+    .hero{
+      text-align:center;
+      padding:10px 8px 18px;
+    }
+
+    .hero .mini{
+      color:var(--gold-soft);
+      font-size:14px;
+      letter-spacing:.5px;
+      margin-bottom:10px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:34px;
+      line-height:1.2;
+      color:#fff7dc;
+      text-shadow:0 2px 14px rgba(0,0,0,.18);
+    }
+
+    .hero p{
+      margin:10px auto 0;
+      max-width:620px;
+      color:#dfe8e2;
+      font-size:15px;
+      line-height:1.8;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,248,233,.98), rgba(248,244,235,.98));
+      color:var(--text);
+      border:1px solid rgba(212,175,55,.22);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      position:relative;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at top left, rgba(212,175,55,.10), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(21,61,45,.06), transparent 26%);
+    }
+
+    .top{
+      padding:22px 18px 18px;
+      border-bottom:1px solid var(--line);
+      position:relative;
+      z-index:1;
+    }
+
+    .search-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      color:#244635;
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .search-title .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 0 6px rgba(212,175,55,.15);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .lang-badge{
+      background:rgba(212,175,55,.14);
+      color:#234736;
+      border:1px solid rgba(212,175,55,.25);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .search-box{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+    }
+
+    .search-box input{
+      width:100%;
+      border:1px solid rgba(21,61,45,.12);
+      background:#fffdf8;
+      color:#173126;
+      border-radius:16px;
+      padding:15px 16px;
+      font-size:17px;
+      outline:none;
+      transition:.2s;
+    }
+
+    .search-box input:focus{
+      border-color:rgba(212,175,55,.7);
+      box-shadow:0 0 0 4px rgba(212,175,55,.12);
+    }
+
+    .search-box button{
+      border:none;
+      border-radius:16px;
+      padding:0 22px;
+      min-width:125px;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      background:linear-gradient(135deg, #c8a12f, #e5c15a);
+      color:#173126;
+      box-shadow:0 8px 20px rgba(212,175,55,.25);
+      transition:.2s ease;
+    }
+
+    .search-box button:hover{
+      transform:translateY(-1px);
+    }
+
+    .meta{
+      padding:18px 18px 10px;
+      color:#4b5f54;
+      font-size:18px;
+      font-weight:600;
+      position:relative;
+      z-index:1;
+    }
+
+    .next-prayer{
+      padding:10px 18px 20px;
+      border-bottom:1px solid var(--line);
+      position:relative;
+      z-index:1;
+    }
+
+    .next-prayer small{
+      display:block;
+      color:#617369;
+      font-size:16px;
+      margin-bottom:10px;
+      line-height:1.8;
+    }
+
+    .big-time{
+      font-size:58px;
+      line-height:1;
+      font-weight:800;
+      color:#183126;
+      letter-spacing:1px;
+      direction:ltr;
+      text-align:right;
+    }
+
+    .table{
+      position:relative;
+      z-index:1;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:22px 18px;
+      border-bottom:1px solid var(--line);
+      font-size:20px;
+    }
+
+    .row:last-child{
+      border-bottom:none;
+    }
+
+    .label{
+      font-weight:700;
+      color:#234736;
+    }
+
+    .time{
+      direction:ltr;
+      font-weight:800;
+      color:#10271d;
+      font-size:21px;
+    }
+
+    .status{
+      padding:16px 18px 20px;
+      color:#63756b;
+      font-size:15px;
+      line-height:1.8;
+      position:relative;
+      z-index:1;
+    }
+
+    .status.error{
+      color:#9f1d1d;
+      font-weight:700;
+    }
+
+    .status.loading{
+      color:#8a6b11;
+      font-weight:700;
+    }
+
+    .footer{
+      text-align:center;
+      color:#dce6df;
+      font-size:13px;
+      margin-top:16px;
+      line-height:1.9;
+      padding:0 10px 12px;
+    }
+
+    .footer b{
+      color:#f3d980;
+      font-weight:700;
+    }
+
+    .notice{
+      text-align:center;
+      margin-top:10px;
+      color:#e9d8a0;
+      font-size:12px;
+      opacity:.9;
+    }
+
+    @media (max-width:640px){
+      .wrap{ padding:18px 10px 14px; }
+      .hero h1{ font-size:28px; }
+      .search-box{ grid-template-columns:1fr; }
+      .search-box button{
+        min-height:52px;
+        width:100%;
+      }
+      .big-time{ font-size:44px; }
+      .row{ font-size:18px; }
+      .time{ font-size:19px; }
+      .meta{ font-size:16px; }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <div class="wrap">
+    <section class="hero">
+      <div class="mini" id="basmala">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم</div>
+      <h1 id="title">مواقيت الصلاة</h1>
+      <p id="subtitle">اكتب اسم المدينة فقط، وسيتم عرض المواقيت اليومية تلقائيًا داخل موقعك بتصميم إسلامي أنيق.</p>
+    </section>
+
+    <div class="card">
+      <div class="top">
+        <div class="controls">
+          <div class="search-title">
+            <span class="dot"></span>
+            <span id="searchTitle">ابحث عن المدينة</span>
+          </div>
+          <div class="lang-badge" id="langBadge">العربية</div>
+        </div>
+
+        <div class="search-box">
+          <input id="cityInput" type="text" placeholder="مثال: حلب" autocomplete="off" spellcheck="false" />
+          <button id="searchBtn">عرض المواقيت</button>
+        </div>
+      </div>
+
+      <div class="meta" id="metaText">—</div>
+
+      <div class="next-prayer" id="nextPrayerBox" style="display:none;">
+        <small id="nextPrayerLabel">وقت الصلاة التالية:</small>
+        <div class="big-time" id="nextPrayerTime">--:--</div>
+      </div>
+
+      <div class="table" id="prayerTable" style="display:none;">
+        <div class="row"><div class="label" id="labelFajr">الفجر</div><div class="time" id="fajr">--:--</div></div>
+        <div class="row"><div class="label" id="labelSunrise">الشروق</div><div class="time" id="sunrise">--:--</div></div>
+        <div class="row"><div class="label" id="labelDhuhr">الظهر</div><div class="time" id="dhuhr">--:--</div></div>
+        <div class="row"><div class="label" id="labelAsr">العصر</div><div class="time" id="asr">--:--</div></div>
+        <div class="row"><div class="label" id="labelMaghrib">المغرب</div><div class="time" id="maghrib">--:--</div></div>
+        <div class="row"><div class="label" id="labelIsha">العشاء</div><div class="time" id="isha">--:--</div></div>
+      </div>
+
+      <div class="status" id="status">اكتب اسم المدينة ثم اضغط على زر عرض المواقيت.</div>
+    </div>
+
+    <div class="footer" id="footerText">
+      جميع الحقوق محفوظة © <b>KeFo.tech</b> — تصميم وبرمجة وعرض المواقيت داخل الموقع لأغراض معلوماتية.
+    </div>
+
+    <div class="notice" id="noticeText">
+      حماية الواجهة مفعّلة.
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      ar: {
+        langName: "العربية",
+        dir: "rtl",
+        title: "مواقيت الصلاة",
+        subtitle: "اكتب اسم المدينة فقط، وسيتم عرض المواقيت اليومية تلقائيًا داخل موقعك بتصميم إسلامي أنيق.",
+        searchTitle: "ابحث عن المدينة",
+        placeholder: "مثال: حلب",
+        button: "عرض المواقيت",
+        statusIdle: "اكتب اسم المدينة ثم اضغط على زر عرض المواقيت.",
+        statusEmpty: "يرجى كتابة اسم المدينة أولًا.",
+        statusLoading: "جارٍ البحث عن المدينة وجلب المواقيت...",
+        statusSuccess: "تم تحديث المواقيت بنجاح",
+        nextPrayer: "وقت الصلاة التالية:",
+        nextPrayerTomorrow: "الفجر (غدًا)",
+        fajr: "الفجر",
+        sunrise: "الشروق",
+        dhuhr: "الظهر",
+        asr: "العصر",
+        maghrib: "المغرب",
+        isha: "العشاء",
+        hijriDate: "التاريخ الهجري",
+        footer: 'جميع الحقوق محفوظة © <b>KeFo.tech</b> — تصميم وبرمجة وعرض المواقيت داخل الموقع لأغراض معلوماتية.',
+        notice: "حماية الواجهة مفعّلة.",
+        basmala: "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم",
+        notFound: "لم يتم العثور على هذه المدينة.",
+        geoError: "فشل تحويل اسم المدينة إلى موقع جغرافي.",
+        fetchError: "فشل جلب مواقيت الصلاة.",
+        genericError: "حدث خطأ غير متوقع."
+      },
+      en: {
+        langName: "English",
+        dir: "ltr",
+        title: "Prayer Times",
+        subtitle: "Type only the city name and the daily prayer schedule will be shown automatically in an elegant Islamic design.",
+        searchTitle: "Search for a city",
+        placeholder: "Example: Aleppo",
+        button: "Show Times",
+        statusIdle: "Type the city name, then press the button.",
+        statusEmpty: "Please type a city name first.",
+        statusLoading: "Searching for the city and fetching prayer times...",
+        statusSuccess: "Prayer times updated successfully",
+        nextPrayer: "Next prayer:",
+        nextPrayerTomorrow: "Fajr (tomorrow)",
+        fajr: "Fajr",
+        sunrise: "Sunrise",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Isha",
+        hijriDate: "Hijri date",
+        footer: 'All rights reserved © <b>KeFo.tech</b> — Design, development, and prayer time display for informational purposes.',
+        notice: "Interface protection is enabled.",
+        basmala: "In the name of Allah, the Most Compassionate, the Most Merciful",
+        notFound: "City not found.",
+        geoError: "Failed to convert the city name into a location.",
+        fetchError: "Failed to fetch prayer times.",
+        genericError: "An unexpected error occurred."
+      },
+      de: {
+        langName: "Deutsch",
+        dir: "ltr",
+        title: "Gebetszeiten",
+        subtitle: "Geben Sie nur den Stadtnamen ein, dann werden die täglichen Gebetszeiten automatisch in einem eleganten islamischen Design angezeigt.",
+        searchTitle: "Nach einer Stadt suchen",
+        placeholder: "Beispiel: Aleppo",
+        button: "Zeiten anzeigen",
+        statusIdle: "Geben Sie den Stadtnamen ein und drücken Sie dann die Taste.",
+        statusEmpty: "Bitte geben Sie zuerst einen Stadtnamen ein.",
+        statusLoading: "Die Stadt wird gesucht und die Gebetszeiten werden geladen...",
+        statusSuccess: "Gebetszeiten erfolgreich aktualisiert",
+        nextPrayer: "Nächstes Gebet:",
+        nextPrayerTomorrow: "Fadschr (morgen)",
+        fajr: "Fadschr",
+        sunrise: "Sonnenaufgang",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Ischa",
+        hijriDate: "Hidschri-Datum",
+        footer: 'Alle Rechte vorbehalten © <b>KeFo.tech</b> — Design, Entwicklung und Anzeige der Gebetszeiten zu Informationszwecken.',
+        notice: "Der Oberflächenschutz ist aktiviert.",
+        basmala: "Im Namen Allahs, des Allerbarmers, des Barmherzigen",
+        notFound: "Stadt wurde nicht gefunden.",
+        geoError: "Der Stadtname konnte nicht in einen Ort umgewandelt werden.",
+        fetchError: "Gebetszeiten konnten nicht geladen werden.",
+        genericError: "Ein unerwarteter Fehler ist aufgetreten."
+      },
+      tr: {
+        langName: "Türkçe",
+        dir: "ltr",
+        title: "Namaz Vakitleri",
+        subtitle: "Sadece şehir adını yazın; günlük namaz vakitleri zarif bir İslami tasarımla otomatik olarak gösterilsin.",
+        searchTitle: "Şehir ara",
+        placeholder: "Örnek: Halep",
+        button: "Vakitleri Göster",
+        statusIdle: "Şehir adını yazın ve ardından düğmeye basın.",
+        statusEmpty: "Lütfen önce bir şehir adı yazın.",
+        statusLoading: "Şehir aranıyor ve namaz vakitleri getiriliyor...",
+        statusSuccess: "Namaz vakitleri başarıyla güncellendi",
+        nextPrayer: "Sıradaki namaz:",
+        nextPrayerTomorrow: "İmsak (yarın)",
+        fajr: "İmsak",
+        sunrise: "Güneş",
+        dhuhr: "Öğle",
+        asr: "İkindi",
+        maghrib: "Akşam",
+        isha: "Yatsı",
+        hijriDate: "Hicri tarih",
+        footer: 'Tüm hakları saklıdır © <b>KeFo.tech</b> — Tasarım, geliştirme ve bilgilendirme amaçlı namaz vakti gösterimi.',
+        notice: "Arayüz koruması etkin.",
+        basmala: "Rahmân ve Rahîm olan Allah’ın adıyla",
+        notFound: "Şehir bulunamadı.",
+        geoError: "Şehir adı konuma dönüştürülemedi.",
+        fetchError: "Namaz vakitleri alınamadı.",
+        genericError: "Beklenmeyen bir hata oluştu."
+      },
+      fr: {
+        langName: "Français",
+        dir: "ltr",
+        title: "Horaires de prière",
+        subtitle: "Saisissez uniquement le nom de la ville, et les horaires quotidiens de prière s’afficheront automatiquement dans un style islamique élégant.",
+        searchTitle: "Rechercher une ville",
+        placeholder: "Exemple : Alep",
+        button: "Afficher",
+        statusIdle: "Saisissez le nom de la ville puis appuyez sur le bouton.",
+        statusEmpty: "Veuillez d’abord saisir un nom de ville.",
+        statusLoading: "Recherche de la ville et récupération des horaires...",
+        statusSuccess: "Horaires mis à jour avec succès",
+        nextPrayer: "Prochaine prière :",
+        nextPrayerTomorrow: "Fajr (demain)",
+        fajr: "Fajr",
+        sunrise: "Lever du soleil",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Isha",
+        hijriDate: "Date hégirienne",
+        footer: 'Tous droits réservés © <b>KeFo.tech</b> — Conception, développement et affichage des horaires de prière à titre informatif.',
+        notice: "La protection de l’interface est activée.",
+        basmala: "Au nom d’Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        notFound: "Ville introuvable.",
+        geoError: "Échec de la conversion du nom de la ville en position géographique.",
+        fetchError: "Impossible de récupérer les horaires de prière.",
+        genericError: "Une erreur inattendue est survenue."
+      },
+      es: {
+        langName: "Español",
+        dir: "ltr",
+        title: "Horarios de oración",
+        subtitle: "Escribe solo el nombre de la ciudad y los horarios diarios de oración aparecerán automáticamente con un diseño islámico elegante.",
+        searchTitle: "Buscar una ciudad",
+        placeholder: "Ejemplo: Alepo",
+        button: "Mostrar horarios",
+        statusIdle: "Escribe el nombre de la ciudad y luego pulsa el botón.",
+        statusEmpty: "Por favor, escribe primero el nombre de una ciudad.",
+        statusLoading: "Buscando la ciudad y obteniendo los horarios de oración...",
+        statusSuccess: "Horarios actualizados correctamente",
+        nextPrayer: "Próxima oración:",
+        nextPrayerTomorrow: "Fajr (mañana)",
+        fajr: "Fajr",
+        sunrise: "Amanecer",
+        dhuhr: "Dhuhr",
+        asr: "Asr",
+        maghrib: "Maghrib",
+        isha: "Isha",
+        hijriDate: "Fecha hijri",
+        footer: 'Todos los derechos reservados © <b>KeFo.tech</b> — Diseño, desarrollo y visualización de horarios de oración con fines informativos.',
+        notice: "La protección de la interfaz está activada.",
+        basmala: "En el nombre de Allah, el Compasivo, el Misericordioso",
+        notFound: "No se encontró la ciudad.",
+        geoError: "No se pudo convertir el nombre de la ciudad en una ubicación.",
+        fetchError: "No se pudieron obtener los horarios de oración.",
+        genericError: "Ocurrió un error inesperado."
+      }
+    };
+
+    function detectLanguage() {
+      const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
+      if (lang.startsWith("ar")) return "ar";
+      if (lang.startsWith("de")) return "de";
+      if (lang.startsWith("tr")) return "tr";
+      if (lang.startsWith("fr")) return "fr";
+      if (lang.startsWith("es")) return "es";
+      return "en";
+    }
+
+    let currentLang = detectLanguage();
+    let t = translations[currentLang];
+
+    const cityInput = document.getElementById("cityInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const metaText = document.getElementById("metaText");
+    const statusBox = document.getElementById("status");
+    const prayerTable = document.getElementById("prayerTable");
+    const nextPrayerBox = document.getElementById("nextPrayerBox");
+    const nextPrayerLabel = document.getElementById("nextPrayerLabel");
+    const nextPrayerTime = document.getElementById("nextPrayerTime");
+    const langBadge = document.getElementById("langBadge");
+
+    const fajrEl = document.getElementById("fajr");
+    const sunriseEl = document.getElementById("sunrise");
+    const dhuhrEl = document.getElementById("dhuhr");
+    const asrEl = document.getElementById("asr");
+    const maghribEl = document.getElementById("maghrib");
+    const ishaEl = document.getElementById("isha");
+
+    function applyLanguage() {
+      t = translations[currentLang] || translations.en;
+
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = t.dir;
+      document.body.style.direction = t.dir;
+
+      document.getElementById("basmala").textContent = t.basmala;
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("searchTitle").textContent = t.searchTitle;
+      cityInput.placeholder = t.placeholder;
+      searchBtn.textContent = t.button;
+      langBadge.textContent = t.langName;
+
+      document.getElementById("labelFajr").textContent = t.fajr;
+      document.getElementById("labelSunrise").textContent = t.sunrise;
+      document.getElementById("labelDhuhr").textContent = t.dhuhr;
+      document.getElementById("labelAsr").textContent = t.asr;
+      document.getElementById("labelMaghrib").textContent = t.maghrib;
+      document.getElementById("labelIsha").textContent = t.isha;
+
+      document.getElementById("footerText").innerHTML = t.footer;
+      document.getElementById("noticeText").textContent = t.notice;
+
+      if (!statusBox.dataset.locked) {
+        statusBox.textContent = t.statusIdle;
+      }
+    }
+
+    function setStatus(message, type = "") {
+      statusBox.className = "status";
+      if (type === "error") statusBox.classList.add("error");
+      if (type === "loading") statusBox.classList.add("loading");
+      statusBox.textContent = message;
+      statusBox.dataset.locked = "1";
+    }
+
+    function setIdleStatus() {
+      statusBox.className = "status";
+      statusBox.textContent = t.statusIdle;
+      delete statusBox.dataset.locked;
+    }
+
+    function cleanTime(value) {
+      return String(value).split(" ")[0].replace(/\(.+\)/, "").trim();
+    }
+
+    function toMinutes(hhmm) {
+      const [h, m] = hhmm.split(":").map(Number);
+      return h * 60 + m;
+    }
+
+    function getNextPrayer(timings) {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      const prayers = [
+        { name: t.fajr, time: timings.Fajr },
+        { name: t.dhuhr, time: timings.Dhuhr },
+        { name: t.asr, time: timings.Asr },
+        { name: t.maghrib, time: timings.Maghrib },
+        { name: t.isha, time: timings.Isha }
+      ];
+
+      for (const prayer of prayers) {
+        if (toMinutes(prayer.time) > currentMinutes) {
+          return prayer;
+        }
+      }
+
+      return { name: t.nextPrayerTomorrow, time: timings.Fajr };
+    }
+
+    async function geocodeCity(city) {
+      const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(city)}`;
+      const response = await fetch(url, {
+        headers: { "Accept": "application/json" }
+      });
+
+      if (!response.ok) {
+        throw new Error(t.geoError);
+      }
+
+      const results = await response.json();
+      if (!results || !results.length) {
+        throw new Error(t.notFound);
+      }
+
+      const place = results[0];
+      return {
+        lat: place.lat,
+        lon: place.lon,
+        displayName: place.display_name
+      };
+    }
+
+    async function fetchPrayerTimesByCoords(lat, lon) {
+      const now = new Date();
+      const day = now.getDate();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+
+      const url = `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&method=4`;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(t.fetchError);
+      }
+
+      const data = await response.json();
+      if (!data || data.code !== 200 || !data.data) {
+        throw new Error(t.fetchError);
+      }
+
+      return data.data;
+    }
+
+    async function runSearch() {
+      const city = cityInput.value.trim();
+
+      if (!city) {
+        setStatus(t.statusEmpty, "error");
+        prayerTable.style.display = "none";
+        nextPrayerBox.style.display = "none";
+        metaText.textContent = "—";
+        return;
+      }
+
+      setStatus(t.statusLoading, "loading");
+      prayerTable.style.display = "none";
+      nextPrayerBox.style.display = "none";
+      metaText.textContent = "—";
+
+      try {
+        const geo = await geocodeCity(city);
+        const prayerData = await fetchPrayerTimesByCoords(geo.lat, geo.lon);
+
+        const timings = prayerData.timings;
+        const dateReadable = prayerData.date?.readable || "";
+        const hijriDate = prayerData.date?.hijri?.date || "";
+        const timezone = prayerData.meta?.timezone || "";
+
+        const fajr = cleanTime(timings.Fajr);
+        const sunrise = cleanTime(timings.Sunrise);
+        const dhuhr = cleanTime(timings.Dhuhr);
+        const asr = cleanTime(timings.Asr);
+        const maghrib = cleanTime(timings.Maghrib);
+        const isha = cleanTime(timings.Isha);
+
+        fajrEl.textContent = fajr;
+        sunriseEl.textContent = sunrise;
+        dhuhrEl.textContent = dhuhr;
+        asrEl.textContent = asr;
+        maghribEl.textContent = maghrib;
+        ishaEl.textContent = isha;
+
+        metaText.textContent = `${geo.displayName} — ${dateReadable}${timezone ? " — " + timezone : ""}`;
+
+        const next = getNextPrayer({
+          Fajr: fajr,
+          Dhuhr: dhuhr,
+          Asr: asr,
+          Maghrib: maghrib,
+          Isha: isha
+        });
+
+        nextPrayerLabel.textContent = `${t.nextPrayer} ${next.name}`;
+        nextPrayerTime.textContent = next.time;
+
+        prayerTable.style.display = "block";
+        nextPrayerBox.style.display = "block";
+
+        let successText = t.statusSuccess;
+        if (hijriDate) successText += ` — ${t.hijriDate}: ${hijriDate}`;
+        setStatus(successText);
+      } catch (error) {
+        console.error(error);
+        setStatus(error.message || t.genericError, "error");
+        prayerTable.style.display = "none";
+        nextPrayerBox.style.display = "none";
+        metaText.textContent = "—";
+      }
+    }
+
+    searchBtn.addEventListener("click", runSearch);
+
+    cityInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") runSearch();
+    });
+
+    applyLanguage();
+
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("dragstart", function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("selectstart", function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("copy", function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("cut", function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("keydown", function(e) {
+      const key = e.key.toLowerCase();
+
+      if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) {
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.ctrlKey && ["u", "s", "p", "c", "x"].includes(key)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    let devtoolsOpen = false;
+    setInterval(function () {
+      const widthThreshold = window.outerWidth - window.innerWidth > 160;
+      const heightThreshold = window.outerHeight - window.innerHeight > 160;
+      if (widthThreshold || heightThreshold) {
+        if (!devtoolsOpen) {
+          devtoolsOpen = true;
+          document.body.innerHTML = `
+            <div style="
+              min-height:100vh;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              text-align:center;
+              padding:30px;
+              background:linear-gradient(160deg,#0f2f23,#153d2d);
+              color:#fff7dc;
+              font-family:Tahoma,Arial,sans-serif;
+              direction:${t.dir};
+            ">
+              <div>
+                <div style="font-size:32px;font-weight:800;margin-bottom:12px;">${t.title}</div>
+                <div style="font-size:18px;line-height:1.9;">${t.notice}</div>
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        devtoolsOpen = false;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
