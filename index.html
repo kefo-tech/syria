@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بوابة الخدمات</title>
+  <title>بوابة الخدمات | KeFo.tech</title>
   <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="بوابة خدمات ذكية تعرض الطقس والمنطقة الحالية مع خدمات إضافية قابلة للتوسعة." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+
   <style>
     :root{
       --bg1:#081120;
@@ -14,13 +20,16 @@
       --text:#f8fafc;
       --muted:#cbd5e1;
       --accent:#38bdf8;
+      --accent2:#22c55e;
       --shadow:0 10px 35px rgba(0,0,0,.28);
       --radius:22px;
+      --danger:#ef4444;
     }
 
     *{
       box-sizing:border-box;
       -webkit-tap-highlight-color:transparent;
+      -webkit-touch-callout:none;
     }
 
     html, body{
@@ -36,12 +45,46 @@
         radial-gradient(circle at top right, rgba(56,189,248,0.16), transparent 28%),
         radial-gradient(circle at top left, rgba(34,197,94,0.10), transparent 24%),
         linear-gradient(160deg,var(--bg1),var(--bg2));
+      user-select:none;
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -ms-user-select:none;
+      overflow-x:hidden;
     }
 
     .container{
       width:min(1100px, 94%);
       margin:auto;
       padding:16px 0 28px;
+    }
+
+    .header-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .top-action-btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      color:#fff;
+      font-family:inherit;
+      font-size:.88rem;
+      font-weight:800;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:11px 15px;
+      box-shadow:var(--shadow);
+      transition:.2s ease;
+    }
+
+    .top-action-btn:hover{
+      transform:translateY(-2px);
+      border-color:rgba(56,189,248,.35);
     }
 
     .top-cards{
@@ -271,6 +314,21 @@
       line-height:1.5;
     }
 
+    .devtools-blocker{
+      position:fixed;
+      inset:0;
+      background:#081120;
+      color:#fff;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:24px;
+      z-index:999999;
+      font-size:1.1rem;
+      line-height:1.9;
+    }
+
     @media (max-width: 700px){
       .container{
         width:min(97%, 97%);
@@ -319,6 +377,10 @@
 
       .next-weather{
         padding:6px 8px;
+      }
+
+      .header-actions{
+        justify-content:center;
       }
     }
 
@@ -387,8 +449,13 @@
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false">
   <div class="container">
+
+    <div class="header-actions">
+      <button class="top-action-btn" id="installBtn" hidden>تثبيت التطبيق</button>
+      <button class="top-action-btn" id="shareBtn">مشاركة التطبيق</button>
+    </div>
 
     <section class="top-cards">
       <div class="glass-card">
@@ -419,7 +486,7 @@
       <h3 class="services-title">الخدمات</h3>
 
       <div class="services-grid">
-        <a class="service-btn" href="./qibla/index.html">
+        <a class="service-btn" href="./qibla/">
           <div class="service-icon">🧭</div>
           <div class="service-title">اتجاه القبلة</div>
           <div class="service-sub">الانتقال إلى صفحة الخدمة</div>
@@ -466,15 +533,29 @@
     </div>
   </div>
 
+  <div class="devtools-blocker" id="devtoolsBlocker">
+    تم تعطيل هذه الصفحة عند محاولة فتح أدوات الفحص.
+  </div>
+
   <script>
     const weatherContent = document.getElementById("weatherContent");
     const weatherBadge = document.getElementById("weatherBadge");
     const areaName = document.getElementById("areaName");
     const locationBadge = document.getElementById("locationBadge");
+    const shareBtn = document.getElementById("shareBtn");
+    const installBtn = document.getElementById("installBtn");
+    const devtoolsBlocker = document.getElementById("devtoolsBlocker");
+
+    let deferredPrompt = null;
 
     init();
 
     function init() {
+      registerServiceWorker();
+      setupInstallPrompt();
+      setupShare();
+      setupProtection();
+
       if (!navigator.geolocation) {
         showLocationError("المتصفح لا يدعم خدمة الموقع");
         showWeatherError("تعذر جلب الطقس لأن الموقع غير مدعوم");
@@ -501,6 +582,92 @@
           maximumAge: 0
         }
       );
+    }
+
+    function registerServiceWorker() {
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
+    }
+
+    function setupInstallPrompt() {
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.hidden = false;
+      });
+
+      installBtn.addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        installBtn.hidden = true;
+      });
+    }
+
+    function setupShare() {
+      shareBtn.addEventListener("click", async () => {
+        const shareData = {
+          title: "بوابة الخدمات | KeFo.tech",
+          text: "جرّب بوابة الخدمات الذكية من KeFo.tech",
+          url: window.location.href
+        };
+
+        try {
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else {
+            await navigator.clipboard.writeText(window.location.href);
+            alert("تم نسخ رابط التطبيق.");
+          }
+        } catch (e) {}
+      });
+    }
+
+    function setupProtection() {
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+      document.addEventListener("dragstart", (e) => e.preventDefault());
+      document.addEventListener("selectstart", (e) => e.preventDefault());
+      document.addEventListener("copy", (e) => e.preventDefault());
+      document.addEventListener("cut", (e) => e.preventDefault());
+
+      document.addEventListener("keydown", (e) => {
+        const key = e.key.toLowerCase();
+
+        if (e.key === "F12") {
+          e.preventDefault();
+          return false;
+        }
+
+        if (e.ctrlKey && key === "u") {
+          e.preventDefault();
+          return false;
+        }
+
+        if (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) {
+          e.preventDefault();
+          return false;
+        }
+
+        if (e.ctrlKey && ["s", "p", "a", "c", "x"].includes(key)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      setInterval(() => {
+        const devtoolsOpen =
+          window.outerWidth - window.innerWidth > 160 ||
+          window.outerHeight - window.innerHeight > 160;
+
+        if (devtoolsOpen) {
+          devtoolsBlocker.style.display = "flex";
+          document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#081120;color:#fff;font-family:Tahoma,Arial,sans-serif;text-align:center;padding:24px;line-height:2;">تم إيقاف الصفحة بسبب محاولة الفحص.</div>`;
+        }
+      }, 1000);
     }
 
     async function loadWeather(lat, lon) {
