@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="بوابة خدمات ذكية تعرض الطقس والمنطقة الحالية مع خدمات إضافية قابلة للتوسعة." />
 
-  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
 
@@ -23,7 +22,6 @@
       --accent2:#22c55e;
       --shadow:0 10px 35px rgba(0,0,0,.28);
       --radius:22px;
-      --danger:#ef4444;
     }
 
     *{
@@ -314,21 +312,6 @@
       line-height:1.5;
     }
 
-    .devtools-blocker{
-      position:fixed;
-      inset:0;
-      background:#081120;
-      color:#fff;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:24px;
-      z-index:999999;
-      font-size:1.1rem;
-      line-height:1.9;
-    }
-
     @media (max-width: 700px){
       .container{
         width:min(97%, 97%);
@@ -453,112 +436,435 @@
   <div class="container">
 
     <div class="header-actions">
-      <button class="top-action-btn" id="installBtn" hidden>تثبيت التطبيق</button>
-      <button class="top-action-btn" id="shareBtn">مشاركة التطبيق</button>
+      <button class="top-action-btn" id="installBtn"></button>
+      <button class="top-action-btn" id="shareBtn"></button>
     </div>
 
     <section class="top-cards">
       <div class="glass-card">
         <div class="card-head">
-          <h2 class="card-title">الطقس الآن</h2>
-          <div class="badge" id="weatherBadge">جارٍ التحميل</div>
+          <h2 class="card-title" id="weatherCardTitle"></h2>
+          <div class="badge" id="weatherBadge"></div>
         </div>
 
-        <div id="weatherContent" class="loading-text">
-          يتم جلب حالة الطقس الحالية...
-        </div>
+        <div id="weatherContent" class="loading-text"></div>
       </div>
 
       <div class="glass-card">
         <div class="card-head">
-          <h2 class="card-title">موقعك الحالي</h2>
-          <div class="badge" id="locationBadge">جارٍ التحديد</div>
+          <h2 class="card-title" id="locationCardTitle"></h2>
+          <div class="badge" id="locationBadge"></div>
         </div>
 
         <div class="location-card-content">
-          <div class="welcome-text">أهلاً بك في:</div>
-          <h1 class="area-name" id="areaName">جارٍ تحديد المنطقة...</h1>
+          <div class="welcome-text" id="welcomeText"></div>
+          <h1 class="area-name" id="areaName"></h1>
         </div>
       </div>
     </section>
 
     <section>
-      <h3 class="services-title">الخدمات</h3>
+      <h3 class="services-title" id="servicesTitle"></h3>
 
       <div class="services-grid">
         <a class="service-btn" href="./qibla/">
           <div class="service-icon">🧭</div>
-          <div class="service-title">اتجاه القبلة</div>
-          <div class="service-sub">الانتقال إلى صفحة الخدمة</div>
+          <div class="service-title" id="service1Title"></div>
+          <div class="service-sub" id="service1Sub"></div>
         </a>
 
         <a class="service-btn" href="javascript:void(0)">
           <div class="service-icon">📍</div>
-          <div class="service-title">خدمة قادمة</div>
-          <div class="service-sub">زر جاهز للإضافة لاحقًا</div>
+          <div class="service-title" id="service2Title"></div>
+          <div class="service-sub" id="service2Sub"></div>
         </a>
 
         <a class="service-btn" href="javascript:void(0)">
           <div class="service-icon">🗂️</div>
-          <div class="service-title">خدمة قادمة</div>
-          <div class="service-sub">يمكن تخصيصها مستقبلاً</div>
+          <div class="service-title" id="service3Title"></div>
+          <div class="service-sub" id="service3Sub"></div>
         </a>
 
         <a class="service-btn" href="javascript:void(0)">
           <div class="service-icon">🌐</div>
-          <div class="service-title">خدمة قادمة</div>
-          <div class="service-sub">زر إضافي للخدمات</div>
+          <div class="service-title" id="service4Title"></div>
+          <div class="service-sub" id="service4Sub"></div>
         </a>
 
         <a class="service-btn" href="javascript:void(0)">
           <div class="service-icon">📦</div>
-          <div class="service-title">خدمة قادمة</div>
-          <div class="service-sub">مساحة لخدمة جديدة</div>
+          <div class="service-title" id="service5Title"></div>
+          <div class="service-sub" id="service5Sub"></div>
         </a>
 
         <a class="service-btn" href="javascript:void(0)">
           <div class="service-icon">⚙️</div>
-          <div class="service-title">خدمة قادمة</div>
-          <div class="service-sub">يمكن ربطها بأي صفحة</div>
+          <div class="service-title" id="service6Title"></div>
+          <div class="service-sub" id="service6Sub"></div>
         </a>
       </div>
 
-      <div class="osm-note">
-        تعتمد أسماء المناطق على دقة بيانات الموقع ونتائج الخرائط المفتوحة.
-      </div>
+      <div class="osm-note" id="osmNote"></div>
     </section>
 
-    <div class="copyright">
-      © 2026 KeFo.tech - جميع الحقوق محفوظة
-    </div>
-  </div>
-
-  <div class="devtools-blocker" id="devtoolsBlocker">
-    تم تعطيل هذه الصفحة عند محاولة فتح أدوات الفحص.
+    <div class="copyright" id="copyrightText"></div>
   </div>
 
   <script>
+    const LANG = (navigator.language || "en").split("-")[0].toLowerCase();
+    const APP_LANG = ["ar", "en", "de", "tr", "hi"].includes(LANG) ? LANG : "en";
+
+    const I18N = {
+      ar: {
+        title: "بوابة الخدمات | KeFo.tech",
+        install: "تثبيت التطبيق",
+        share: "مشاركة التطبيق",
+        weatherCardTitle: "الطقس الآن",
+        weatherLoading: "يتم جلب حالة الطقس الحالية...",
+        weatherUpdating: "جاري التحديث",
+        weatherUpdated: "محدث الآن",
+        weatherUnavailable: "غير متاح",
+        locationCardTitle: "موقعك الحالي",
+        locationLocating: "جارٍ التحديد",
+        locationSearching: "جاري البحث",
+        locationDone: "تم التحديد",
+        welcome: "أهلاً بك في:",
+        areaLoading: "جارٍ تحديد المنطقة...",
+        areaCurrent: "منطقتك الحالية",
+        servicesTitle: "الخدمات",
+        service1Title: "اتجاه القبلة",
+        service1Sub: "الانتقال إلى صفحة الخدمة",
+        service2Title: "خدمة قادمة",
+        service2Sub: "زر جاهز للإضافة لاحقًا",
+        service3Title: "خدمة قادمة",
+        service3Sub: "يمكن تخصيصها مستقبلاً",
+        service4Title: "خدمة قادمة",
+        service4Sub: "زر إضافي للخدمات",
+        service5Title: "خدمة قادمة",
+        service5Sub: "مساحة لخدمة جديدة",
+        service6Title: "خدمة قادمة",
+        service6Sub: "يمكن ربطها بأي صفحة",
+        osmNote: "تعتمد أسماء المناطق على دقة بيانات الموقع ونتائج الخرائط المفتوحة.",
+        copyright: "© 2026 KeFo.tech - جميع الحقوق محفوظة",
+        weatherError: "تعذر جلب بيانات الطقس",
+        locationError: "تعذر تحديد المنطقة",
+        geolocationNotSupported: "المتصفح لا يدعم خدمة الموقع",
+        geolocationDenied: "تم رفض إذن الموقع",
+        shareText: "جرّب بوابة الخدمات الذكية من KeFo.tech",
+        copied: "تم نسخ رابط التطبيق.",
+        installHint: "إذا لم يظهر التثبيت التلقائي، يمكنك تثبيت التطبيق يدويًا من قائمة المتصفح ثم: إضافة إلى الشاشة الرئيسية.",
+        afterHour: "بعد ساعة:",
+        currentWeatherUnknown: "حالة جوية غير معروفة",
+        clear: "سماء صافية",
+        mostlyClear: "غالبًا صحو",
+        partlyCloudy: "غائم جزئيًا",
+        cloudy: "غائم",
+        fog: "ضباب",
+        denseFog: "ضباب كثيف",
+        lightDrizzle: "رذاذ خفيف",
+        moderateDrizzle: "رذاذ متوسط",
+        heavyDrizzle: "رذاذ كثيف",
+        lightRain: "مطر خفيف",
+        moderateRain: "مطر متوسط",
+        heavyRain: "مطر غزير",
+        lightSnow: "ثلوج خفيفة",
+        snow: "ثلوج",
+        heavySnow: "ثلوج كثيفة",
+        snowGrains: "حبوب ثلجية",
+        lightShowers: "زخات مطر خفيفة",
+        showers: "زخات مطر",
+        heavyShowers: "زخات مطر غزيرة",
+        lightSnowShowers: "زخات ثلج خفيفة",
+        heavySnowShowers: "زخات ثلج كثيفة",
+        thunderstorm: "عاصفة رعدية",
+        thunderHailLight: "عاصفة مع برد خفيف",
+        thunderHailHeavy: "عاصفة مع برد شديد"
+      },
+      en: {
+        title: "Services Portal | KeFo.tech",
+        install: "Install App",
+        share: "Share App",
+        weatherCardTitle: "Weather Now",
+        weatherLoading: "Fetching current weather...",
+        weatherUpdating: "Updating",
+        weatherUpdated: "Updated",
+        weatherUnavailable: "Unavailable",
+        locationCardTitle: "Your Location",
+        locationLocating: "Locating",
+        locationSearching: "Searching",
+        locationDone: "Detected",
+        welcome: "Welcome to:",
+        areaLoading: "Detecting area...",
+        areaCurrent: "Your current area",
+        servicesTitle: "Services",
+        service1Title: "Qibla Direction",
+        service1Sub: "Open the service page",
+        service2Title: "Coming Soon",
+        service2Sub: "Ready for future feature",
+        service3Title: "Coming Soon",
+        service3Sub: "Can be customized later",
+        service4Title: "Coming Soon",
+        service4Sub: "Extra service button",
+        service5Title: "Coming Soon",
+        service5Sub: "Space for new feature",
+        service6Title: "Coming Soon",
+        service6Sub: "Can link to any page",
+        osmNote: "Area names depend on location accuracy and open map data.",
+        copyright: "© 2026 KeFo.tech - All rights reserved",
+        weatherError: "Unable to fetch weather data",
+        locationError: "Unable to detect area",
+        geolocationNotSupported: "Geolocation is not supported by this browser",
+        geolocationDenied: "Location permission was denied",
+        shareText: "Try the smart services portal by KeFo.tech",
+        copied: "App link copied.",
+        installHint: "If automatic install does not appear, use the browser menu and add it to the home screen manually.",
+        afterHour: "In 1 hour:",
+        currentWeatherUnknown: "Unknown weather",
+        clear: "Clear sky",
+        mostlyClear: "Mostly clear",
+        partlyCloudy: "Partly cloudy",
+        cloudy: "Cloudy",
+        fog: "Fog",
+        denseFog: "Dense fog",
+        lightDrizzle: "Light drizzle",
+        moderateDrizzle: "Moderate drizzle",
+        heavyDrizzle: "Heavy drizzle",
+        lightRain: "Light rain",
+        moderateRain: "Moderate rain",
+        heavyRain: "Heavy rain",
+        lightSnow: "Light snow",
+        snow: "Snow",
+        heavySnow: "Heavy snow",
+        snowGrains: "Snow grains",
+        lightShowers: "Light rain showers",
+        showers: "Rain showers",
+        heavyShowers: "Heavy rain showers",
+        lightSnowShowers: "Light snow showers",
+        heavySnowShowers: "Heavy snow showers",
+        thunderstorm: "Thunderstorm",
+        thunderHailLight: "Storm with light hail",
+        thunderHailHeavy: "Storm with heavy hail"
+      },
+      de: {
+        title: "Serviceportal | KeFo.tech",
+        install: "App installieren",
+        share: "App teilen",
+        weatherCardTitle: "Wetter jetzt",
+        weatherLoading: "Aktuelles Wetter wird geladen...",
+        weatherUpdating: "Aktualisiert",
+        weatherUpdated: "Aktuell",
+        weatherUnavailable: "Nicht verfügbar",
+        locationCardTitle: "Ihr Standort",
+        locationLocating: "Wird ermittelt",
+        locationSearching: "Suche läuft",
+        locationDone: "Ermittelt",
+        welcome: "Willkommen in:",
+        areaLoading: "Gebiet wird ermittelt...",
+        areaCurrent: "Ihr aktuelles Gebiet",
+        servicesTitle: "Dienste",
+        service1Title: "Qibla-Richtung",
+        service1Sub: "Dienstseite öffnen",
+        service2Title: "Demnächst",
+        service2Sub: "Bereit für spätere Funktion",
+        service3Title: "Demnächst",
+        service3Sub: "Später anpassbar",
+        service4Title: "Demnächst",
+        service4Sub: "Zusätzliche Schaltfläche",
+        service5Title: "Demnächst",
+        service5Sub: "Platz für neue Funktion",
+        service6Title: "Demnächst",
+        service6Sub: "Kann zu jeder Seite verlinken",
+        osmNote: "Gebietsnamen hängen von Standortgenauigkeit und offenen Kartendaten ab.",
+        copyright: "© 2026 KeFo.tech - Alle Rechte vorbehalten",
+        weatherError: "Wetterdaten konnten nicht geladen werden",
+        locationError: "Gebiet konnte nicht ermittelt werden",
+        geolocationNotSupported: "Geolokalisierung wird nicht unterstützt",
+        geolocationDenied: "Standortberechtigung wurde verweigert",
+        shareText: "Probieren Sie das smarte Serviceportal von KeFo.tech",
+        copied: "Link zur App wurde kopiert.",
+        installHint: "Falls die automatische Installation nicht erscheint, fügen Sie die App manuell über das Browsermenü zum Startbildschirm hinzu.",
+        afterHour: "In 1 Stunde:",
+        currentWeatherUnknown: "Unbekanntes Wetter",
+        clear: "Klarer Himmel",
+        mostlyClear: "Meist klar",
+        partlyCloudy: "Teilweise bewölkt",
+        cloudy: "Bewölkt",
+        fog: "Nebel",
+        denseFog: "Dichter Nebel",
+        lightDrizzle: "Leichter Nieselregen",
+        moderateDrizzle: "Mäßiger Nieselregen",
+        heavyDrizzle: "Starker Nieselregen",
+        lightRain: "Leichter Regen",
+        moderateRain: "Mäßiger Regen",
+        heavyRain: "Starker Regen",
+        lightSnow: "Leichter Schnee",
+        snow: "Schnee",
+        heavySnow: "Starker Schneefall",
+        snowGrains: "Schneekörner",
+        lightShowers: "Leichte Regenschauer",
+        showers: "Regenschauer",
+        heavyShowers: "Starke Regenschauer",
+        lightSnowShowers: "Leichte Schneeschauer",
+        heavySnowShowers: "Starke Schneeschauer",
+        thunderstorm: "Gewitter",
+        thunderHailLight: "Gewitter mit leichtem Hagel",
+        thunderHailHeavy: "Gewitter mit starkem Hagel"
+      },
+      tr: {
+        title: "Hizmet Portalı | KeFo.tech",
+        install: "Uygulamayı yükle",
+        share: "Uygulamayı paylaş",
+        weatherCardTitle: "Şu an hava",
+        weatherLoading: "Güncel hava getiriliyor...",
+        weatherUpdating: "Güncelleniyor",
+        weatherUpdated: "Güncel",
+        weatherUnavailable: "Mevcut değil",
+        locationCardTitle: "Konumunuz",
+        locationLocating: "Belirleniyor",
+        locationSearching: "Aranıyor",
+        locationDone: "Belirlendi",
+        welcome: "Hoş geldiniz:",
+        areaLoading: "Bölge belirleniyor...",
+        areaCurrent: "Mevcut bölgeniz",
+        servicesTitle: "Hizmetler",
+        service1Title: "Kıble Yönü",
+        service1Sub: "Hizmet sayfasını aç",
+        service2Title: "Yakında",
+        service2Sub: "Gelecekteki özellik için hazır",
+        service3Title: "Yakında",
+        service3Sub: "Daha sonra özelleştirilebilir",
+        service4Title: "Yakında",
+        service4Sub: "Ek hizmet düğmesi",
+        service5Title: "Yakında",
+        service5Sub: "Yeni özellik alanı",
+        service6Title: "Yakında",
+        service6Sub: "Herhangi bir sayfaya bağlanabilir",
+        osmNote: "Bölge adları konum doğruluğuna ve açık harita verilerine bağlıdır.",
+        copyright: "© 2026 KeFo.tech - Tüm hakları saklıdır",
+        weatherError: "Hava verileri alınamadı",
+        locationError: "Bölge belirlenemedi",
+        geolocationNotSupported: "Tarayıcı konumu desteklemiyor",
+        geolocationDenied: "Konum izni reddedildi",
+        shareText: "KeFo.tech akıllı hizmet portalını deneyin",
+        copied: "Uygulama bağlantısı kopyalandı.",
+        installHint: "Otomatik kurulum görünmezse, tarayıcı menüsünden ana ekrana elle ekleyin.",
+        afterHour: "1 saat sonra:",
+        currentWeatherUnknown: "Bilinmeyen hava",
+        clear: "Açık gökyüzü",
+        mostlyClear: "Çoğunlukla açık",
+        partlyCloudy: "Parçalı bulutlu",
+        cloudy: "Bulutlu",
+        fog: "Sis",
+        denseFog: "Yoğun sis",
+        lightDrizzle: "Hafif çiseleme",
+        moderateDrizzle: "Orta çiseleme",
+        heavyDrizzle: "Yoğun çiseleme",
+        lightRain: "Hafif yağmur",
+        moderateRain: "Orta yağmur",
+        heavyRain: "Şiddetli yağmur",
+        lightSnow: "Hafif kar",
+        snow: "Kar",
+        heavySnow: "Yoğun kar",
+        snowGrains: "Kar taneleri",
+        lightShowers: "Hafif sağanak",
+        showers: "Sağanak",
+        heavyShowers: "Şiddetli sağanak",
+        lightSnowShowers: "Hafif kar sağanağı",
+        heavySnowShowers: "Yoğun kar sağanağı",
+        thunderstorm: "Gök gürültülü fırtına",
+        thunderHailLight: "Hafif dolulu fırtına",
+        thunderHailHeavy: "Şiddetli dolulu fırtına"
+      },
+      hi: {
+        title: "सेवा पोर्टल | KeFo.tech",
+        install: "ऐप इंस्टॉल करें",
+        share: "ऐप साझा करें",
+        weatherCardTitle: "अभी का मौसम",
+        weatherLoading: "मौसम लाया जा रहा है...",
+        weatherUpdating: "अपडेट हो रहा है",
+        weatherUpdated: "अपडेटेड",
+        weatherUnavailable: "उपलब्ध नहीं",
+        locationCardTitle: "आपका स्थान",
+        locationLocating: "स्थान पता किया जा रहा है",
+        locationSearching: "खोज जारी है",
+        locationDone: "पता चल गया",
+        welcome: "आपका स्वागत है:",
+        areaLoading: "क्षेत्र पता किया जा रहा है...",
+        areaCurrent: "आपका वर्तमान क्षेत्र",
+        servicesTitle: "सेवाएँ",
+        service1Title: "क़िबला दिशा",
+        service1Sub: "सेवा पृष्ठ खोलें",
+        service2Title: "जल्द आ रहा है",
+        service2Sub: "भविष्य की सुविधा के लिए तैयार",
+        service3Title: "जल्द आ रहा है",
+        service3Sub: "बाद में अनुकूलित किया जा सकता है",
+        service4Title: "जल्द आ रहा है",
+        service4Sub: "अतिरिक्त सेवा बटन",
+        service5Title: "जल्द आ रहा है",
+        service5Sub: "नई सुविधा के लिए स्थान",
+        service6Title: "जल्द आ रहा है",
+        service6Sub: "किसी भी पृष्ठ से जोड़ा जा सकता है",
+        osmNote: "क्षेत्र के नाम स्थान की शुद्धता और खुले मानचित्र डेटा पर निर्भर करते हैं।",
+        copyright: "© 2026 KeFo.tech - सर्वाधिकार सुरक्षित",
+        weatherError: "मौसम डेटा प्राप्त नहीं हो सका",
+        locationError: "क्षेत्र पता नहीं चल सका",
+        geolocationNotSupported: "यह ब्राउज़र लोकेशन का समर्थन नहीं करता",
+        geolocationDenied: "लोकेशन अनुमति अस्वीकार कर दी गई",
+        shareText: "KeFo.tech का स्मार्ट सेवा पोर्टल आज़माएँ",
+        copied: "ऐप लिंक कॉपी हो गया।",
+        installHint: "यदि स्वचालित इंस्टॉल नहीं दिखे, तो ब्राउज़र मेनू से मैन्युअली होम स्क्रीन पर जोड़ें।",
+        afterHour: "1 घंटे बाद:",
+        currentWeatherUnknown: "अज्ञात मौसम",
+        clear: "साफ आसमान",
+        mostlyClear: "ज़्यादातर साफ",
+        partlyCloudy: "आंशिक बादल",
+        cloudy: "बादल छाए",
+        fog: "कोहरा",
+        denseFog: "घना कोहरा",
+        lightDrizzle: "हल्की फुहार",
+        moderateDrizzle: "मध्यम फुहार",
+        heavyDrizzle: "तेज़ फुहार",
+        lightRain: "हल्की बारिश",
+        moderateRain: "मध्यम बारिश",
+        heavyRain: "तेज़ बारिश",
+        lightSnow: "हल्की बर्फ़बारी",
+        snow: "बर्फ़",
+        heavySnow: "भारी बर्फ़बारी",
+        snowGrains: "बर्फ़ के कण",
+        lightShowers: "हल्की बौछारें",
+        showers: "बारिश की बौछारें",
+        heavyShowers: "तेज़ बौछारें",
+        lightSnowShowers: "हल्की हिम बौछारें",
+        heavySnowShowers: "तेज़ हिम बौछारें",
+        thunderstorm: "आंधी-तूफ़ान",
+        thunderHailLight: "हल्की ओलों के साथ तूफ़ान",
+        thunderHailHeavy: "भारी ओलों के साथ तूफ़ान"
+      }
+    };
+
+    const T = I18N[APP_LANG];
+
     const weatherContent = document.getElementById("weatherContent");
     const weatherBadge = document.getElementById("weatherBadge");
     const areaName = document.getElementById("areaName");
     const locationBadge = document.getElementById("locationBadge");
     const shareBtn = document.getElementById("shareBtn");
     const installBtn = document.getElementById("installBtn");
-    const devtoolsBlocker = document.getElementById("devtoolsBlocker");
 
     let deferredPrompt = null;
 
     init();
 
     function init() {
+      applyTranslations();
       registerServiceWorker();
       setupInstallPrompt();
       setupShare();
       setupProtection();
 
       if (!navigator.geolocation) {
-        showLocationError("المتصفح لا يدعم خدمة الموقع");
-        showWeatherError("تعذر جلب الطقس لأن الموقع غير مدعوم");
+        showLocationError(T.geolocationNotSupported);
+        showWeatherError(T.geolocationNotSupported);
         return;
       }
 
@@ -573,8 +879,8 @@
           ]);
         },
         () => {
-          showLocationError("تم رفض إذن الموقع");
-          showWeatherError("تعذر جلب الطقس لأن إذن الموقع مرفوض");
+          showLocationError(T.geolocationDenied);
+          showWeatherError(T.geolocationDenied);
         },
         {
           enableHighAccuracy: true,
@@ -582,6 +888,39 @@
           maximumAge: 0
         }
       );
+    }
+
+    function applyTranslations() {
+      document.documentElement.lang = APP_LANG;
+      document.documentElement.dir = APP_LANG === "ar" ? "rtl" : "ltr";
+      document.title = T.title;
+
+      installBtn.textContent = T.install;
+      shareBtn.textContent = T.share;
+
+      document.getElementById("weatherCardTitle").textContent = T.weatherCardTitle;
+      document.getElementById("locationCardTitle").textContent = T.locationCardTitle;
+      document.getElementById("welcomeText").textContent = T.welcome;
+      document.getElementById("servicesTitle").textContent = T.servicesTitle;
+      document.getElementById("service1Title").textContent = T.service1Title;
+      document.getElementById("service1Sub").textContent = T.service1Sub;
+      document.getElementById("service2Title").textContent = T.service2Title;
+      document.getElementById("service2Sub").textContent = T.service2Sub;
+      document.getElementById("service3Title").textContent = T.service3Title;
+      document.getElementById("service3Sub").textContent = T.service3Sub;
+      document.getElementById("service4Title").textContent = T.service4Title;
+      document.getElementById("service4Sub").textContent = T.service4Sub;
+      document.getElementById("service5Title").textContent = T.service5Title;
+      document.getElementById("service5Sub").textContent = T.service5Sub;
+      document.getElementById("service6Title").textContent = T.service6Title;
+      document.getElementById("service6Sub").textContent = T.service6Sub;
+      document.getElementById("osmNote").textContent = T.osmNote;
+      document.getElementById("copyrightText").textContent = T.copyright;
+
+      weatherBadge.textContent = T.weatherUpdating;
+      locationBadge.textContent = T.locationLocating;
+      weatherContent.textContent = T.weatherLoading;
+      areaName.textContent = T.areaLoading;
     }
 
     function registerServiceWorker() {
@@ -596,23 +935,24 @@
       window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBtn.hidden = false;
       });
 
       installBtn.addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        installBtn.hidden = true;
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+        } else {
+          alert(T.installHint);
+        }
       });
     }
 
     function setupShare() {
       shareBtn.addEventListener("click", async () => {
         const shareData = {
-          title: "بوابة الخدمات | KeFo.tech",
-          text: "جرّب بوابة الخدمات الذكية من KeFo.tech",
+          title: T.title,
+          text: T.shareText,
           url: window.location.href
         };
 
@@ -621,7 +961,7 @@
             await navigator.share(shareData);
           } else {
             await navigator.clipboard.writeText(window.location.href);
-            alert("تم نسخ رابط التطبيق.");
+            alert(T.copied);
           }
         } catch (e) {}
       });
@@ -651,19 +991,12 @@
           e.preventDefault();
           return false;
         }
-
-        if (e.ctrlKey && ["s", "p", "a", "c", "x"].includes(key)) {
-          e.preventDefault();
-          return false;
-        }
       });
-
-      
     }
 
     async function loadWeather(lat, lon) {
       try {
-        weatherBadge.textContent = "جاري التحديث";
+        weatherBadge.textContent = T.weatherUpdating;
 
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&hourly=weather_code&forecast_hours=3&timezone=auto`;
         const res = await fetch(url);
@@ -682,7 +1015,7 @@
         const nextWeatherHTML = nextHourInfo ? `
           <div class="next-weather">
             <span class="next-weather-icon">${nextHourInfo.icon}</span>
-            <span>بعد ساعة: ${nextHourInfo.text}</span>
+            <span>${T.afterHour} ${nextHourInfo.text}</span>
           </div>
         ` : "";
 
@@ -697,21 +1030,21 @@
           </div>
         `;
 
-        weatherBadge.textContent = "محدث الآن";
+        weatherBadge.textContent = T.weatherUpdated;
       } catch (err) {
-        showWeatherError("تعذر جلب بيانات الطقس");
+        showWeatherError(T.weatherError);
       }
     }
 
     async function loadAreaName(lat, lon) {
       try {
-        locationBadge.textContent = "جاري البحث";
+        locationBadge.textContent = T.locationSearching;
 
-        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=ar`;
+        const requestLang = (navigator.language || "en").split("-")[0];
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=${encodeURIComponent(requestLang)}`;
+
         const res = await fetch(url, {
-          headers: {
-            "Accept": "application/json"
-          }
+          headers: { "Accept": "application/json" }
         });
 
         if (!res.ok) throw new Error("nominatim fetch failed");
@@ -731,54 +1064,54 @@
           address.village ||
           address.town ||
           address.city ||
-          "منطقتك الحالية";
+          T.areaCurrent;
 
         areaName.textContent = bestArea;
-        locationBadge.textContent = "تم التحديد";
+        locationBadge.textContent = T.locationDone;
       } catch (err) {
-        showLocationError("تعذر تحديد المنطقة");
+        showLocationError(T.locationError);
       }
     }
 
     function showWeatherError(message) {
-      weatherBadge.textContent = "غير متاح";
+      weatherBadge.textContent = T.weatherUnavailable;
       weatherContent.innerHTML = `<div class="error-text">${message}</div>`;
     }
 
     function showLocationError(message) {
-      locationBadge.textContent = "غير متاح";
+      locationBadge.textContent = T.weatherUnavailable;
       areaName.textContent = message;
     }
 
     function getWeatherInfo(code) {
       const map = {
-        0:  { text: "سماء صافية", icon: "☀️" },
-        1:  { text: "غالبًا صحو", icon: "🌤️" },
-        2:  { text: "غائم جزئيًا", icon: "⛅" },
-        3:  { text: "غائم", icon: "☁️" },
-        45: { text: "ضباب", icon: "🌫️" },
-        48: { text: "ضباب كثيف", icon: "🌫️" },
-        51: { text: "رذاذ خفيف", icon: "🌦️" },
-        53: { text: "رذاذ متوسط", icon: "🌦️" },
-        55: { text: "رذاذ كثيف", icon: "🌧️" },
-        61: { text: "مطر خفيف", icon: "🌦️" },
-        63: { text: "مطر متوسط", icon: "🌧️" },
-        65: { text: "مطر غزير", icon: "⛈️" },
-        71: { text: "ثلوج خفيفة", icon: "🌨️" },
-        73: { text: "ثلوج", icon: "❄️" },
-        75: { text: "ثلوج كثيفة", icon: "❄️" },
-        77: { text: "حبوب ثلجية", icon: "❄️" },
-        80: { text: "زخات مطر خفيفة", icon: "🌦️" },
-        81: { text: "زخات مطر", icon: "🌧️" },
-        82: { text: "زخات مطر غزيرة", icon: "⛈️" },
-        85: { text: "زخات ثلج خفيفة", icon: "🌨️" },
-        86: { text: "زخات ثلج كثيفة", icon: "❄️" },
-        95: { text: "عاصفة رعدية", icon: "⛈️" },
-        96: { text: "عاصفة مع برد خفيف", icon: "⛈️" },
-        99: { text: "عاصفة مع برد شديد", icon: "⛈️" }
+        0:  { text: T.clear, icon: "☀️" },
+        1:  { text: T.mostlyClear, icon: "🌤️" },
+        2:  { text: T.partlyCloudy, icon: "⛅" },
+        3:  { text: T.cloudy, icon: "☁️" },
+        45: { text: T.fog, icon: "🌫️" },
+        48: { text: T.denseFog, icon: "🌫️" },
+        51: { text: T.lightDrizzle, icon: "🌦️" },
+        53: { text: T.moderateDrizzle, icon: "🌦️" },
+        55: { text: T.heavyDrizzle, icon: "🌧️" },
+        61: { text: T.lightRain, icon: "🌦️" },
+        63: { text: T.moderateRain, icon: "🌧️" },
+        65: { text: T.heavyRain, icon: "⛈️" },
+        71: { text: T.lightSnow, icon: "🌨️" },
+        73: { text: T.snow, icon: "❄️" },
+        75: { text: T.heavySnow, icon: "❄️" },
+        77: { text: T.snowGrains, icon: "❄️" },
+        80: { text: T.lightShowers, icon: "🌦️" },
+        81: { text: T.showers, icon: "🌧️" },
+        82: { text: T.heavyShowers, icon: "⛈️" },
+        85: { text: T.lightSnowShowers, icon: "🌨️" },
+        86: { text: T.heavySnowShowers, icon: "❄️" },
+        95: { text: T.thunderstorm, icon: "⛈️" },
+        96: { text: T.thunderHailLight, icon: "⛈️" },
+        99: { text: T.thunderHailHeavy, icon: "⛈️" }
       };
 
-      return map[code] || { text: "حالة جوية غير معروفة", icon: "🌍" };
+      return map[code] || { text: T.currentWeatherUnknown, icon: "🌍" };
     }
   </script>
 </body>
