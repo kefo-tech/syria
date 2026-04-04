@@ -658,16 +658,7 @@
         }
       });
 
-      setInterval(() => {
-        const devtoolsOpen =
-          window.outerWidth - window.innerWidth > 160 ||
-          window.outerHeight - window.innerHeight > 160;
-
-        if (devtoolsOpen) {
-          devtoolsBlocker.style.display = "flex";
-          document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#081120;color:#fff;font-family:Tahoma,Arial,sans-serif;text-align:center;padding:24px;line-height:2;">تم إيقاف الصفحة بسبب محاولة الفحص.</div>`;
-        }
-      }, 1000);
+      
     }
 
     async function loadWeather(lat, lon) {
