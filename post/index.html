@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>عبارات إسلامية عشوائية | KeFo.tech</title>
-  <meta name="description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف، مع إمكانية النسخ والمشاركة بسهولة." />
+  <meta name="description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف، مع تأثير الآلة الكاتبة وإمكانية البحث والنسخ والمشاركة." />
   <meta name="theme-color" content="#0f2b24" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="KeFo.tech" />
   <meta property="og:title" content="عبارات إسلامية عشوائية | KeFo.tech" />
-  <meta property="og:description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف، مع أزرار نسخ ومشاركة." />
+  <meta property="og:description" content="موقع يعرض عبارات إسلامية عشوائية مع تأثير الآلة الكاتبة والبحث والمشاركة." />
   <meta property="og:url" content="https://kefo-tech.github.io/" />
   <meta property="og:image" content="https://kefo-tech.github.io/images/islamic-share.jpg" />
   <meta property="og:image:alt" content="عبارات إسلامية عشوائية من KeFo.tech" />
 
-  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="عبارات إسلامية عشوائية | KeFo.tech" />
   <meta name="twitter:description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف." />
@@ -37,6 +35,7 @@
       --muted:#d5d0c3;
       --shadow:0 10px 35px rgba(0,0,0,.28);
       --radius:24px;
+      --danger:#ffcf9f;
     }
 
     *{
@@ -85,12 +84,12 @@
     }
 
     .wrap{
-      width:min(100%, 560px);
+      width:min(100%, 620px);
     }
 
     .hero{
       text-align:center;
-      margin-bottom:18px;
+      margin-bottom:5px;
       padding:10px 6px;
     }
 
@@ -104,7 +103,7 @@
       padding:8px 14px;
       border-radius:999px;
       font-size:13px;
-      margin-bottom:12px;
+      margin-bottom:-5px;
       backdrop-filter: blur(6px);
     }
 
@@ -118,10 +117,80 @@
 
     .hero p{
       margin:0 auto;
-      max-width:470px;
+      max-width:500px;
       color:var(--muted);
       font-size:15px;
-      line-height:1.9;
+      line-height:0.9;
+    }
+
+    .search-panel{
+      margin-bottom:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(240,215,162,.14);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .search-row{
+      display:grid;
+      grid-template-columns: 1fr auto auto;
+      gap:10px;
+      align-items:center;
+    }
+
+    .search-input{
+      width:100%;
+      min-height:52px;
+      border:none;
+      outline:none;
+      border-radius:16px;
+      padding:0 16px;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font-size:15px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .search-input::placeholder{
+      color:#cfc8b8;
+    }
+
+    .mini-btn{
+      min-height:52px;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:16px;
+      padding:0 14px;
+      font-size:14px;
+      font-weight:700;
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+
+    .mini-btn:active{
+      transform:scale(.98);
+    }
+
+    .mini-btn.active{
+      background:linear-gradient(135deg, var(--gold), #b8893a);
+      color:#1f1708;
+      border-color:transparent;
+      box-shadow:0 8px 20px rgba(216,179,106,.18);
+    }
+
+    .search-hint{
+      text-align:center;
+      margin-top:10px;
+      color:var(--green-soft);
+      font-size:13px;
+      line-height:1.8;
+      min-height:22px;
     }
 
     .card{
@@ -133,7 +202,7 @@
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
-      padding:20px 16px 18px;
+      padding:1px 16px 1px;
       backdrop-filter: blur(8px);
     }
 
@@ -153,7 +222,7 @@
       justify-content:center;
       align-items:center;
       gap:10px;
-      margin-bottom:16px;
+      margin-bottom:1px;
       color:var(--gold);
       font-size:14px;
       opacity:.95;
@@ -167,12 +236,12 @@
     }
 
     .quote-box{
-      min-height:180px;
+      min-height:210px;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding:10px 8px;
+      padding:1px 8px;
     }
 
     .quote{
@@ -180,13 +249,25 @@
       line-height:2;
       color:#fffdf7;
       margin:0;
-      transition:opacity .35s ease, transform .35s ease;
       text-shadow:0 2px 10px rgba(0,0,0,.18);
+      white-space:pre-wrap;
+      word-break:break-word;
     }
 
-    .quote.fade-out{
-      opacity:0;
-      transform:translateY(8px) scale(.985);
+    .cursor{
+      display:inline-block;
+      width:2px;
+      height:1.1em;
+      background:var(--gold-soft);
+      vertical-align:middle;
+      margin-right:6px;
+      animation:blink 0.8s infinite;
+      border-radius:2px;
+    }
+
+    @keyframes blink{
+      0%, 49%{ opacity:1; }
+      50%, 100%{ opacity:0; }
     }
 
     .sub{
@@ -196,6 +277,7 @@
       margin-top:4px;
       margin-bottom:18px;
       line-height:1.8;
+      min-height:24px;
     }
 
     .actions{
@@ -294,6 +376,19 @@
       color:#9dc4b4;
       text-align:center;
       min-height:20px;
+      line-height:1.8;
+    }
+
+    .empty-state{
+      color:var(--danger);
+      font-size:19px;
+      line-height:1.9;
+    }
+
+    @media (max-width: 560px){
+      .search-row{
+        grid-template-columns:1fr;
+      }
     }
 
     @media (max-width: 420px){
@@ -311,7 +406,7 @@
       }
 
       .quote-box{
-        min-height:160px;
+        min-height:180px;
       }
     }
   </style>
@@ -320,8 +415,24 @@
   <main class="page">
     <div class="wrap">
       <section class="hero">
-        <div class="hero-badge">☪ عبارات إيمانية ملهمة</div>
+        <div class="hero-badge">مولد منشورات تلقائية</div>
         
+      </section>
+
+      <section class="search-panel">
+        <div class="search-row">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="اكتب كلمة للبحث داخل العبارات... مثل: الله أو الصبر أو الدعاء"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          
+        </div>
+        <div class="search-hint" id="searchHintText">
+        </div>
       </section>
 
       <section class="card">
@@ -332,12 +443,14 @@
         </div>
 
         <div class="quote-box">
-          <p class="quote" id="quoteText">جاري تحميل العبارة...</p>
+          <p class="quote" id="quoteText"></p>
         </div>
 
+        <div class="sub" id="modeInfoText">
+        </div>
 
         <div class="actions">
-          <button class="btn btn-main" id="randomBtn">🔄 عبارة عشوائية</button>
+          <button class="btn btn-main" id="randomBtn">🔄 عبارة جديدة</button>
           <button class="btn btn-soft" id="copyBtn">📋 نسخ العبارة</button>
         </div>
 
@@ -380,6 +493,7 @@
       "ما دام الله معك، فلا تخشَ من تقلبات الدنيا.",
       "استغفارٌ صادق قد يفتح لك أبواب رزقٍ وفرجٍ لا تتوقعها.",
       "جمّل يومك بالصلاة على النبي ﷺ.",
+      "القرب من الله هو الأمان الحقيقي في هذا العالم المضطرب.",
       "الشغف بالعلم: يجب أن يكون الدافع الأساسي للتعلم هو الشغف بالمعرفة والرغبة في الاكتشاف لتعلم المستمر: لا يتوقف التعلم عند انتهاء الدراسة الرسمية؛ يجب أن يكون نمط حياة. استفد من الدورات التدريبية المجانية عبر الإنترنت، الكتب الإلكترونية، والمحاضرات المتاحة عبر الشبكة المنهجية العلمية: اعتمد على المنهج العلمي في البحث والتحليل، ولا تكتف بالمعلومات السطحية. جرّب واختبر نظرياتك وافتراضاتك.",
                     
                     "ثمة مشاعر كان يجب ألاَ تذهب لأحدهم، ثمة أحاديث ليتها ما قيلت، تضحيات ليتنا لم نقم بها، أعذارًا ليتنا لم نلتمسها، حقاً ثمة جواهر خرجت لِمن لا يستحق ",
@@ -831,7 +945,7 @@
 "استعن على صلاح قلبك بشئ من العزلة فالقلب يفسده الزحام. ",
 " كلّ شيء في العالم محتمل الحدوث إلا توالي أيام السعادة.",
 " اللهم اجبر خواطر كُسرت ؛ و قلوب جُرحت ؛ و نفوس ضاقت بها الدنيا بما رحبت♥️",
-      "القرب من الله هو الأمان الحقيقي في هذا العالم المضطرب."
+      
     ];
 
     const quoteText = document.getElementById("quoteText");
@@ -839,20 +953,55 @@
     const copyBtn = document.getElementById("copyBtn");
     const statusText = document.getElementById("statusText");
     const shareGeneralBtn = document.getElementById("shareGeneralBtn");
+    const searchInput = document.getElementById("searchInput");
+    const searchHintText = document.getElementById("searchHintText");
+    const modeInfoText = document.getElementById("modeInfoText");
 
     const whatsappShare = document.getElementById("whatsappShare");
     const telegramShare = document.getElementById("telegramShare");
     const facebookShare = document.getElementById("facebookShare");
 
     let currentQuote = "";
-    let autoTimer = null;
+    let isAnimating = false;
+    let cycleTimeout = null;
+    let typeInterval = null;
+    let eraseInterval = null;
+    let soundEnabled = true;
+    let filteredQuotes = [...quotes];
+    let audioCtx = null;
 
-    function getRandomQuote() {
-      if (quotes.length === 1) return quotes[0];
+    const TYPING_SPEED = 65;
+    const ERASING_SPEED = 28;
+    const READING_DELAY = 5200;
+
+    function normalizeArabic(text) {
+      return text
+        .toLowerCase()
+        .replace(/[أإآٱ]/g, "ا")
+        .replace(/ى/g, "ي")
+        .replace(/ؤ/g, "و")
+        .replace(/ئ/g, "ي")
+        .replace(/ة/g, "ه")
+        .replace(/ً|ٌ|ٍ|َ|ُ|ِ|ّ|ْ|ـ/g, "")
+        .trim();
+    }
+
+    function getPool() {
+      return filteredQuotes.length ? filteredQuotes : [];
+    }
+
+    function getRandomQuoteFromPool() {
+      const pool = getPool();
+      if (!pool.length) return null;
+      if (pool.length === 1) return pool[0];
+
       let newQuote;
+      let guard = 0;
       do {
-        newQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      } while (newQuote === currentQuote);
+        newQuote = pool[Math.floor(Math.random() * pool.length)];
+        guard++;
+      } while (newQuote === currentQuote && guard < 20);
+
       return newQuote;
     }
 
@@ -862,31 +1011,212 @@
 
       whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + pageUrl)}`;
       telegramShare.href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}`;
-
-      /* فيسبوك يشارك الرابط ومعاينته غالباً، وليس العبارة الديناميكية نفسها */
       facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
     }
 
-    function showQuote(animated = true) {
-      const newQuote = getRandomQuote();
+    function setTypingText(text) {
+      quoteText.innerHTML = `${text}<span class="cursor"></span>`;
+    }
 
-      if (animated) {
-        quoteText.classList.add("fade-out");
-
-        setTimeout(() => {
-          currentQuote = newQuote;
-          quoteText.textContent = currentQuote;
-          updateShareLinks(currentQuote);
-          quoteText.classList.remove("fade-out");
-        }, 260);
+    function setPlainText(text, isEmpty = false) {
+      if (isEmpty) {
+        quoteText.innerHTML = `<span class="empty-state">${text}</span>`;
       } else {
-        currentQuote = newQuote;
-        quoteText.textContent = currentQuote;
-        updateShareLinks(currentQuote);
+        quoteText.textContent = text;
       }
     }
 
+    function clearAllTimers() {
+      clearTimeout(cycleTimeout);
+      clearInterval(typeInterval);
+      clearInterval(eraseInterval);
+    }
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+    }
+
+    function playTypeSound() {
+  if (!soundEnabled) return;
+
+  ensureAudio();
+  if (!audioCtx) return;
+
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume().catch(() => {});
+  }
+
+  const now = audioCtx.currentTime;
+
+  // مولد ضجيج قصير لإعطاء إحساس "تكّة" ميكانيكية
+  const bufferSize = 0.02 * audioCtx.sampleRate;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+
+  const bandpass = audioCtx.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = 2200 + Math.random() * 700;
+  bandpass.Q.value = 1.2;
+
+  const highpass = audioCtx.createBiquadFilter();
+  highpass.type = "highpass";
+  highpass.frequency.value = 1200;
+
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.03 + Math.random() * 0.01, now + 0.002);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.028);
+
+  // ضربة معدنية خفيفة جدًا فوق الضجيج
+  const osc = audioCtx.createOscillator();
+  const oscGain = audioCtx.createGain();
+
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(1400 + Math.random() * 300, now);
+  osc.frequency.exponentialRampToValueAtTime(700 + Math.random() * 120, now + 0.02);
+
+  oscGain.gain.setValueAtTime(0.0001, now);
+  oscGain.gain.exponentialRampToValueAtTime(0.01, now + 0.001);
+  oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+
+  noise.connect(bandpass);
+  bandpass.connect(highpass);
+  highpass.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.connect(oscGain);
+  oscGain.connect(audioCtx.destination);
+
+  noise.start(now);
+  noise.stop(now + 0.03);
+
+  osc.start(now);
+  osc.stop(now + 0.022);
+}
+
+    function typeQuote(text, onDone) {
+  let i = 0;
+  setTypingText("");
+
+  typeInterval = setInterval(() => {
+    i++;
+
+    const visibleText = text.slice(0, i);
+    setTypingText(visibleText);
+
+    const lastChar = visibleText[visibleText.length - 1];
+    if (lastChar && lastChar.trim() !== "") {
+      playTypeSound();
+    }
+
+    if (i >= text.length) {
+      clearInterval(typeInterval);
+      if (typeof onDone === "function") onDone();
+    }
+  }, 95);
+}
+
+    function eraseQuote(onDone) {
+      let text = currentQuote;
+      let i = text.length;
+
+      eraseInterval = setInterval(() => {
+        i--;
+        setTypingText(text.slice(0, Math.max(i, 0)));
+
+        if (i <= 0) {
+          clearInterval(eraseInterval);
+          if (typeof onDone === "function") onDone();
+        }
+      }, ERASING_SPEED);
+    }
+
+    function updateModeTexts() {
+      const keyword = searchInput.value.trim();
+
+      if (!keyword) {
+        searchHintText.textContent = `يتم الآن العرض من جميع العبارات (${quotes.length})`;
+        modeInfoText.textContent = "    ";
+        return;
+      }
+
+      if (filteredQuotes.length) {
+        searchHintText.textContent = `تم العثور على ${filteredQuotes.length} عبارة مطابقة لكلمة: ${keyword}`;
+        modeInfoText.textContent = "يتم التبديل عشوائيًا فقط بين نتائج البحث المطابقة";
+      } else {
+        searchHintText.textContent = `لا توجد عبارات تحتوي على: ${keyword}`;
+        modeInfoText.textContent = "عدّل كلمة البحث أو امسحها للعودة إلى جميع العبارات";
+      }
+    }
+
+    function applySearchFilter() {
+      const keyword = normalizeArabic(searchInput.value);
+
+      if (!keyword) {
+        filteredQuotes = [...quotes];
+      } else {
+        filteredQuotes = quotes.filter(q =>
+          normalizeArabic(q).includes(keyword)
+        );
+      }
+
+      updateModeTexts();
+      restartCycle(true);
+    }
+
+    function startQuoteCycle(forceManual = false) {
+      if (isAnimating && !forceManual) return;
+
+      clearAllTimers();
+      isAnimating = true;
+
+      const nextQuote = getRandomQuoteFromPool();
+
+      if (!nextQuote) {
+        currentQuote = "";
+        setPlainText("لم يتم العثور على عبارات مطابقة لهذه الكلمة", true);
+        statusText.textContent = "لا توجد نتائج حاليًا";
+        isAnimating = false;
+        return;
+      }
+
+      currentQuote = nextQuote;
+      updateShareLinks(currentQuote);
+
+      typeQuote(currentQuote, () => {
+        statusText.textContent = "يمكنك الآن قراءة العبارة بهدوء ✨";
+
+        cycleTimeout = setTimeout(() => {
+          eraseQuote(() => {
+            isAnimating = false;
+            startQuoteCycle();
+          });
+        }, READING_DELAY);
+      });
+    }
+
+    function restartCycle(forceManual = false) {
+      clearAllTimers();
+      isAnimating = false;
+      startQuoteCycle(forceManual);
+    }
+
     async function copyCurrentQuote() {
+      if (!currentQuote) {
+        statusText.textContent = "لا توجد عبارة قابلة للنسخ";
+        return;
+      }
+
       try {
         await navigator.clipboard.writeText(currentQuote);
         statusText.textContent = "تم نسخ العبارة بنجاح ✅";
@@ -895,13 +1225,17 @@
       }
 
       setTimeout(() => {
-        statusText.textContent = "تتبدل العبارة تلقائيًا وبشكل عشوائي";
+        statusText.textContent = "تظهر العبارة تدريجيًا لتسهيل القراءة";
       }, 2200);
     }
 
     async function shareGeneral() {
+      if (!currentQuote) {
+        statusText.textContent = "لا توجد عبارة قابلة للمشاركة";
+        return;
+      }
+
       const pageUrl = window.location.href;
-      const text = `${currentQuote}\n\n${pageUrl}`;
 
       if (navigator.share) {
         try {
@@ -920,41 +1254,41 @@
       }
 
       setTimeout(() => {
-        statusText.textContent = "تتبدل العبارة تلقائيًا وبشكل عشوائي";
+        statusText.textContent = "تظهر العبارة تدريجيًا لتسهيل القراءة";
       }, 2200);
     }
 
-    function startAutoRandom() {
-      clearInterval(autoTimer);
-      autoTimer = setInterval(() => {
-        showQuote(true);
-      }, 7000);
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      soundToggleBtn.classList.toggle("active", soundEnabled);
+      soundToggleBtn.textContent = soundEnabled ? "🔊 صوت الكتابة" : "🔇 الصوت متوقف";
+      statusText.textContent = soundEnabled ? "تم تشغيل صوت الكتابة" : "تم إيقاف صوت الكتابة";
     }
 
     randomBtn.addEventListener("click", () => {
-      showQuote(true);
-      startAutoRandom();
+      restartCycle(true);
     });
 
     copyBtn.addEventListener("click", copyCurrentQuote);
     shareGeneralBtn.addEventListener("click", shareGeneral);
 
+    searchInput.addEventListener("input", applySearchFilter);
+
+    
+
+    document.addEventListener("click", () => {
+      ensureAudio();
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+    }, { once: true });
+
     document.addEventListener("contextmenu", (e) => e.preventDefault(), { passive: false });
-
-    let pressTimer;
-    document.addEventListener("touchstart", () => {
-      pressTimer = setTimeout(() => {}, 500);
-    }, { passive: true });
-
-    document.addEventListener("touchend", () => {
-      clearTimeout(pressTimer);
-    }, { passive: true });
-
     document.addEventListener("dragstart", (e) => e.preventDefault());
     document.addEventListener("selectstart", (e) => e.preventDefault());
 
-    showQuote(false);
-    startAutoRandom();
+    updateModeTexts();
+    startQuoteCycle();
   </script>
 </body>
 </html>
