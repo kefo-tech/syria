@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>بوابة الخدمات</title>
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    :root{
+      --bg1:#081120;
+      --bg2:#0f172a;
+      --card:rgba(255,255,255,0.07);
+      --card-border:rgba(255,255,255,0.12);
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --accent:#38bdf8;
+      --shadow:0 10px 35px rgba(0,0,0,.28);
+      --radius:22px;
+    }
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html, body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+    }
+
+    body{
+      font-family:"Tahoma","Arial",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(56,189,248,0.16), transparent 28%),
+        radial-gradient(circle at top left, rgba(34,197,94,0.10), transparent 24%),
+        linear-gradient(160deg,var(--bg1),var(--bg2));
+    }
+
+    .container{
+      width:min(1100px, 94%);
+      margin:auto;
+      padding:16px 0 28px;
+    }
+
+    .top-cards{
+      display:grid;
+      grid-template-columns:minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap:12px;
+      margin-bottom:20px;
+      align-items:stretch;
+    }
+
+    .glass-card{
+      background:var(--card);
+      border:1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      min-height:126px;
+    }
+
+    .glass-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 45%);
+      pointer-events:none;
+    }
+
+    .card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      position:relative;
+      z-index:1;
+      margin-bottom:12px;
+    }
+
+    .card-title{
+      margin:0;
+      font-size:clamp(.9rem, 1.5vw, 1.02rem);
+      font-weight:800;
+      color:#fff;
+      line-height:1.3;
+    }
+
+    .badge{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:#e2e8f0;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:clamp(.68rem, 1.2vw, .84rem);
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+
+    .weather-card-content{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:68px;
+    }
+
+    .weather-icon{
+      width:clamp(46px, 8vw, 60px);
+      height:clamp(46px, 8vw, 60px);
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:clamp(1.2rem, 2.5vw, 1.8rem);
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.10);
+      flex-shrink:0;
+    }
+
+    .weather-temp{
+      font-size:clamp(1.4rem, 4vw, 2.1rem);
+      font-weight:900;
+      line-height:1;
+      margin-bottom:5px;
+      letter-spacing:-0.5px;
+    }
+
+    .weather-desc{
+      color:var(--muted);
+      font-size:clamp(.78rem, 1.8vw, .96rem);
+      line-height:1.45;
+      margin-bottom:6px;
+    }
+
+    .next-weather{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+      padding:7px 10px;
+      border-radius:999px;
+      color:#e2e8f0;
+      font-size:clamp(.68rem, 1.5vw, .82rem);
+      line-height:1.4;
+      flex-wrap:wrap;
+    }
+
+    .next-weather-icon{
+      font-size:1rem;
+      line-height:1;
+    }
+
+    .location-card-content{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      min-height:68px;
+    }
+
+    .welcome-text{
+      color:var(--muted);
+      font-size:clamp(.78rem, 1.8vw, .96rem);
+      margin-bottom:8px;
+      line-height:1.4;
+    }
+
+    .area-name{
+      margin:0;
+      font-size:clamp(1rem, 3.2vw, 1.8rem);
+      font-weight:900;
+      line-height:1.35;
+      color:#fff;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    .services-title{
+      margin:0 0 14px;
+      font-size:clamp(.96rem, 1.8vw, 1.06rem);
+      font-weight:800;
+      color:#fff;
+    }
+
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .service-btn{
+      text-decoration:none;
+      color:#fff;
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      min-height:118px;
+      padding:15px 10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:9px;
+      transition:.22s ease;
+      box-shadow:var(--shadow);
+    }
+
+    .service-btn:hover{
+      transform:translateY(-4px);
+      border-color:rgba(56,189,248,.4);
+      background:linear-gradient(180deg, rgba(56,189,248,.14), rgba(255,255,255,.06));
+    }
+
+    .service-icon{
+      width:clamp(42px, 7vw, 54px);
+      height:clamp(42px, 7vw, 54px);
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-size:clamp(1.15rem, 2.4vw, 1.55rem);
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.10);
+      flex-shrink:0;
+    }
+
+    .service-title{
+      font-size:clamp(.82rem, 1.8vw, 1rem);
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    .service-sub{
+      font-size:clamp(.68rem, 1.45vw, .82rem);
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .copyright{
+      margin-top:24px;
+      text-align:center;
+      color:#cbd5e1;
+      font-size:clamp(.75rem, 1.6vw, .9rem);
+      opacity:.92;
+      padding:14px 10px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .loading-text,
+    .error-text{
+      color:#fff;
+      font-size:clamp(.78rem, 1.7vw, .96rem);
+      line-height:1.7;
+      position:relative;
+      z-index:1;
+    }
+
+    .osm-note{
+      margin-top:10px;
+      color:#94a3b8;
+      font-size:clamp(.66rem, 1.3vw, .78rem);
+      text-align:center;
+      line-height:1.5;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        width:min(97%, 97%);
+        padding:12px 0 22px;
+      }
+
+      .top-cards{
+        grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+        gap:10px;
+      }
+
+      .glass-card{
+        min-height:112px;
+        padding:12px;
+        border-radius:18px;
+      }
+
+      .card-head{
+        margin-bottom:10px;
+        gap:6px;
+      }
+
+      .badge{
+        padding:6px 8px;
+      }
+
+      .weather-card-content{
+        gap:9px;
+        min-height:auto;
+      }
+
+      .services-grid{
+        gap:10px;
+      }
+
+      .service-btn{
+        min-height:98px;
+        padding:12px 7px;
+        border-radius:17px;
+        gap:7px;
+      }
+
+      .service-sub{
+        display:none;
+      }
+
+      .next-weather{
+        padding:6px 8px;
+      }
+    }
+
+    @media (max-width: 420px){
+      .container{
+        width:min(98%, 98%);
+      }
+
+      .top-cards{
+        gap:8px;
+      }
+
+      .glass-card{
+        padding:10px;
+        min-height:104px;
+        border-radius:16px;
+      }
+
+      .card-title{
+        font-size:.82rem;
+      }
+
+      .badge{
+        font-size:.62rem;
+        padding:5px 7px;
+      }
+
+      .weather-temp{
+        font-size:1.18rem;
+      }
+
+      .weather-desc{
+        font-size:.72rem;
+      }
+
+      .welcome-text{
+        font-size:.72rem;
+      }
+
+      .area-name{
+        font-size:.95rem;
+        line-height:1.3;
+      }
+
+      .services-grid{
+        gap:8px;
+      }
+
+      .service-btn{
+        min-height:90px;
+        padding:10px 6px;
+        border-radius:15px;
+      }
+
+      .service-title{
+        font-size:.75rem;
+      }
+
+      .service-icon{
+        border-radius:13px;
+      }
+
+      .next-weather{
+        font-size:.64rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <section class="top-cards">
+      <div class="glass-card">
+        <div class="card-head">
+          <h2 class="card-title">الطقس الآن</h2>
+          <div class="badge" id="weatherBadge">جارٍ التحميل</div>
+        </div>
+
+        <div id="weatherContent" class="loading-text">
+          يتم جلب حالة الطقس الحالية...
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-head">
+          <h2 class="card-title">موقعك الحالي</h2>
+          <div class="badge" id="locationBadge">جارٍ التحديد</div>
+        </div>
+
+        <div class="location-card-content">
+          <div class="welcome-text">أهلاً بك في:</div>
+          <h1 class="area-name" id="areaName">جارٍ تحديد المنطقة...</h1>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="services-title">الخدمات</h3>
+
+      <div class="services-grid">
+        <a class="service-btn" href="./qibla/index.html">
+          <div class="service-icon">🧭</div>
+          <div class="service-title">اتجاه القبلة</div>
+          <div class="service-sub">الانتقال إلى صفحة الخدمة</div>
+        </a>
+
+        <a class="service-btn" href="javascript:void(0)">
+          <div class="service-icon">📍</div>
+          <div class="service-title">خدمة قادمة</div>
+          <div class="service-sub">زر جاهز للإضافة لاحقًا</div>
+        </a>
+
+        <a class="service-btn" href="javascript:void(0)">
+          <div class="service-icon">🗂️</div>
+          <div class="service-title">خدمة قادمة</div>
+          <div class="service-sub">يمكن تخصيصها مستقبلاً</div>
+        </a>
+
+        <a class="service-btn" href="javascript:void(0)">
+          <div class="service-icon">🌐</div>
+          <div class="service-title">خدمة قادمة</div>
+          <div class="service-sub">زر إضافي للخدمات</div>
+        </a>
+
+        <a class="service-btn" href="javascript:void(0)">
+          <div class="service-icon">📦</div>
+          <div class="service-title">خدمة قادمة</div>
+          <div class="service-sub">مساحة لخدمة جديدة</div>
+        </a>
+
+        <a class="service-btn" href="javascript:void(0)">
+          <div class="service-icon">⚙️</div>
+          <div class="service-title">خدمة قادمة</div>
+          <div class="service-sub">يمكن ربطها بأي صفحة</div>
+        </a>
+      </div>
+
+      <div class="osm-note">
+        تعتمد أسماء المناطق على دقة بيانات الموقع ونتائج الخرائط المفتوحة.
+      </div>
+    </section>
+
+    <div class="copyright">
+      © 2026 KeFo.tech - جميع الحقوق محفوظة
+    </div>
+  </div>
+
+  <script>
+    const weatherContent = document.getElementById("weatherContent");
+    const weatherBadge = document.getElementById("weatherBadge");
+    const areaName = document.getElementById("areaName");
+    const locationBadge = document.getElementById("locationBadge");
+
+    init();
+
+    function init() {
+      if (!navigator.geolocation) {
+        showLocationError("المتصفح لا يدعم خدمة الموقع");
+        showWeatherError("تعذر جلب الطقس لأن الموقع غير مدعوم");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          await Promise.all([
+            loadWeather(lat, lon),
+            loadAreaName(lat, lon)
+          ]);
+        },
+        () => {
+          showLocationError("تم رفض إذن الموقع");
+          showWeatherError("تعذر جلب الطقس لأن إذن الموقع مرفوض");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    }
+
+    async function loadWeather(lat, lon) {
+      try {
+        weatherBadge.textContent = "جاري التحديث";
+
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&hourly=weather_code&forecast_hours=3&timezone=auto`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("weather fetch failed");
+
+        const data = await res.json();
+        const current = data.current;
+        const temp = Math.round(current.temperature_2m);
+        const currentInfo = getWeatherInfo(current.weather_code);
+
+        const nextHourCode = data.hourly?.weather_code?.[1];
+        const nextHourInfo = typeof nextHourCode !== "undefined"
+          ? getWeatherInfo(nextHourCode)
+          : null;
+
+        const nextWeatherHTML = nextHourInfo ? `
+          <div class="next-weather">
+            <span class="next-weather-icon">${nextHourInfo.icon}</span>
+            <span>بعد ساعة: ${nextHourInfo.text}</span>
+          </div>
+        ` : "";
+
+        weatherContent.innerHTML = `
+          <div class="weather-card-content">
+            <div class="weather-icon">${currentInfo.icon}</div>
+            <div>
+              <div class="weather-temp">${temp}°</div>
+              <div class="weather-desc">${currentInfo.text}</div>
+              ${nextWeatherHTML}
+            </div>
+          </div>
+        `;
+
+        weatherBadge.textContent = "محدث الآن";
+      } catch (err) {
+        showWeatherError("تعذر جلب بيانات الطقس");
+      }
+    }
+
+    async function loadAreaName(lat, lon) {
+      try {
+        locationBadge.textContent = "جاري البحث";
+
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=ar`;
+        const res = await fetch(url, {
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!res.ok) throw new Error("nominatim fetch failed");
+
+        const data = await res.json();
+        const address = data.address || {};
+
+        const bestArea =
+          address.suburb ||
+          address.neighbourhood ||
+          address.neighborhood ||
+          address.quarter ||
+          address.city_district ||
+          address.residential ||
+          address.borough ||
+          address.hamlet ||
+          address.village ||
+          address.town ||
+          address.city ||
+          "منطقتك الحالية";
+
+        areaName.textContent = bestArea;
+        locationBadge.textContent = "تم التحديد";
+      } catch (err) {
+        showLocationError("تعذر تحديد المنطقة");
+      }
+    }
+
+    function showWeatherError(message) {
+      weatherBadge.textContent = "غير متاح";
+      weatherContent.innerHTML = `<div class="error-text">${message}</div>`;
+    }
+
+    function showLocationError(message) {
+      locationBadge.textContent = "غير متاح";
+      areaName.textContent = message;
+    }
+
+    function getWeatherInfo(code) {
+      const map = {
+        0:  { text: "سماء صافية", icon: "☀️" },
+        1:  { text: "غالبًا صحو", icon: "🌤️" },
+        2:  { text: "غائم جزئيًا", icon: "⛅" },
+        3:  { text: "غائم", icon: "☁️" },
+        45: { text: "ضباب", icon: "🌫️" },
+        48: { text: "ضباب كثيف", icon: "🌫️" },
+        51: { text: "رذاذ خفيف", icon: "🌦️" },
+        53: { text: "رذاذ متوسط", icon: "🌦️" },
+        55: { text: "رذاذ كثيف", icon: "🌧️" },
+        61: { text: "مطر خفيف", icon: "🌦️" },
+        63: { text: "مطر متوسط", icon: "🌧️" },
+        65: { text: "مطر غزير", icon: "⛈️" },
+        71: { text: "ثلوج خفيفة", icon: "🌨️" },
+        73: { text: "ثلوج", icon: "❄️" },
+        75: { text: "ثلوج كثيفة", icon: "❄️" },
+        77: { text: "حبوب ثلجية", icon: "❄️" },
+        80: { text: "زخات مطر خفيفة", icon: "🌦️" },
+        81: { text: "زخات مطر", icon: "🌧️" },
+        82: { text: "زخات مطر غزيرة", icon: "⛈️" },
+        85: { text: "زخات ثلج خفيفة", icon: "🌨️" },
+        86: { text: "زخات ثلج كثيفة", icon: "❄️" },
+        95: { text: "عاصفة رعدية", icon: "⛈️" },
+        96: { text: "عاصفة مع برد خفيف", icon: "⛈️" },
+        99: { text: "عاصفة مع برد شديد", icon: "⛈️" }
+      };
+
+      return map[code] || { text: "حالة جوية غير معروفة", icon: "🌍" };
+    }
+  </script>
+</body>
+</html>
