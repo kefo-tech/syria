@@ -3,8 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
   <title>عبارات إسلامية عشوائية | KeFo.tech</title>
-  <meta name="description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الجوال." />
+  <meta name="description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف، مع إمكانية النسخ والمشاركة بسهولة." />
+  <meta name="theme-color" content="#0f2b24" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="KeFo.tech" />
+  <meta property="og:title" content="عبارات إسلامية عشوائية | KeFo.tech" />
+  <meta property="og:description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف، مع أزرار نسخ ومشاركة." />
+  <meta property="og:url" content="https://kefo-tech.github.io/" />
+  <meta property="og:image" content="https://kefo-tech.github.io/images/islamic-share.jpg" />
+  <meta property="og:image:alt" content="عبارات إسلامية عشوائية من KeFo.tech" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="عبارات إسلامية عشوائية | KeFo.tech" />
+  <meta name="twitter:description" content="موقع يعرض عبارات إسلامية عشوائية بتصميم أنيق ومتجاوب مع الهاتف." />
+  <meta name="twitter:image" content="https://kefo-tech.github.io/images/islamic-share.jpg" />
 
   <style>
     :root{
@@ -25,13 +42,16 @@
     *{
       box-sizing:border-box;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
     }
 
     html,body{
       margin:0;
       padding:0;
       min-height:100%;
-      font-family: "Tahoma", "Arial", sans-serif;
+      font-family:"Tahoma","Arial",sans-serif;
       color:var(--text);
       background:
         radial-gradient(circle at top right, rgba(216,179,106,.12), transparent 25%),
@@ -48,8 +68,8 @@
       opacity:.10;
       background-image:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g fill='none' stroke='%23d8b36a' stroke-width='1.2' opacity='0.5'><path d='M90 10 L110 50 L150 60 L120 90 L128 130 L90 110 L52 130 L60 90 L30 60 L70 50 Z'/><circle cx='90' cy='90' r='70'/></g></svg>");
-      background-size: 180px 180px;
-      background-repeat: repeat;
+      background-size:180px 180px;
+      background-repeat:repeat;
     }
 
     .page{
@@ -175,6 +195,7 @@
       font-size:13px;
       margin-top:4px;
       margin-bottom:18px;
+      line-height:1.8;
     }
 
     .actions{
@@ -219,7 +240,7 @@
 
     .socials{
       display:grid;
-      grid-template-columns:repeat(4, 1fr);
+      grid-template-columns:repeat(2, 1fr);
       gap:10px;
       margin-top:12px;
     }
@@ -239,10 +260,23 @@
       transition:.2s ease;
       padding:10px 6px;
       text-align:center;
+      cursor:pointer;
     }
 
     .social-btn:active{
       transform:scale(.97);
+    }
+
+    .note{
+      margin-top:14px;
+      padding:12px;
+      border-radius:16px;
+      background:rgba(216,179,106,.08);
+      border:1px solid rgba(216,179,106,.14);
+      color:#efe2c0;
+      font-size:13px;
+      line-height:1.9;
+      text-align:center;
     }
 
     .footer{
@@ -251,7 +285,7 @@
       color:#cdbf9a;
       font-size:12px;
       line-height:1.8;
-      padding-bottom: max(4px, env(safe-area-inset-bottom));
+      padding-bottom:max(4px, env(safe-area-inset-bottom));
     }
 
     .tiny{
@@ -259,6 +293,7 @@
       font-size:12px;
       color:#9dc4b4;
       text-align:center;
+      min-height:20px;
     }
 
     @media (max-width: 420px){
@@ -272,7 +307,7 @@
       }
 
       .socials{
-        grid-template-columns:repeat(2, 1fr);
+        grid-template-columns:1fr 1fr;
       }
 
       .quote-box{
@@ -284,13 +319,9 @@
 <body>
   <main class="page">
     <div class="wrap">
-
       <section class="hero">
         <div class="hero-badge">☪ عبارات إيمانية ملهمة</div>
-        <h1>رسائل نورٍ تتبدّل لك في كل زيارة</h1>
-        <p>
-          موقع بسيط وجميل يعرض عبارات إسلامية بشكل عشوائي داخل بطاقة أنيقة، مع إمكانية التبديل والمشاركة بسهولة عبر الهاتف.
-        </p>
+        
       </section>
 
       <section class="card">
@@ -304,7 +335,6 @@
           <p class="quote" id="quoteText">جاري تحميل العبارة...</p>
         </div>
 
-        <div class="sub">تتبدل العبارة تلقائيًا وبشكل عشوائي</div>
 
         <div class="actions">
           <button class="btn btn-main" id="randomBtn">🔄 عبارة عشوائية</button>
@@ -312,11 +342,13 @@
         </div>
 
         <div class="socials">
+          <button class="social-btn" id="shareGeneralBtn">📲 مشاركة عامة</button>
           <a class="social-btn" id="whatsappShare" href="#" target="_blank" rel="noopener">واتساب</a>
           <a class="social-btn" id="telegramShare" href="#" target="_blank" rel="noopener">تلغرام</a>
           <a class="social-btn" id="facebookShare" href="#" target="_blank" rel="noopener">فيسبوك</a>
-          <a class="social-btn" id="twitterShare" href="#" target="_blank" rel="noopener">X</a>
         </div>
+
+        
 
         <div class="tiny" id="statusText">مرحبًا بك 🌙</div>
       </section>
@@ -355,11 +387,11 @@
     const randomBtn = document.getElementById("randomBtn");
     const copyBtn = document.getElementById("copyBtn");
     const statusText = document.getElementById("statusText");
+    const shareGeneralBtn = document.getElementById("shareGeneralBtn");
 
     const whatsappShare = document.getElementById("whatsappShare");
     const telegramShare = document.getElementById("telegramShare");
     const facebookShare = document.getElementById("facebookShare");
-    const twitterShare = document.getElementById("twitterShare");
 
     let currentQuote = "";
     let autoTimer = null;
@@ -379,8 +411,9 @@
 
       whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + pageUrl)}`;
       telegramShare.href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}`;
+
+      /* فيسبوك يشارك الرابط ومعاينته غالباً، وليس العبارة الديناميكية نفسها */
       facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-      twitterShare.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
     }
 
     function showQuote(animated = true) {
@@ -412,7 +445,32 @@
 
       setTimeout(() => {
         statusText.textContent = "تتبدل العبارة تلقائيًا وبشكل عشوائي";
-      }, 2000);
+      }, 2200);
+    }
+
+    async function shareGeneral() {
+      const pageUrl = window.location.href;
+      const text = `${currentQuote}\n\n${pageUrl}`;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "عبارات إسلامية عشوائية | KeFo.tech",
+            text: currentQuote,
+            url: pageUrl
+          });
+          statusText.textContent = "تم فتح نافذة المشاركة ✅";
+        } catch (e) {
+          statusText.textContent = "تم إلغاء المشاركة";
+        }
+      } else {
+        await copyCurrentQuote();
+        statusText.textContent = "تم نسخ العبارة، شاركها يدويًا مع الرابط ✅";
+      }
+
+      setTimeout(() => {
+        statusText.textContent = "تتبدل العبارة تلقائيًا وبشكل عشوائي";
+      }, 2200);
     }
 
     function startAutoRandom() {
@@ -428,6 +486,21 @@
     });
 
     copyBtn.addEventListener("click", copyCurrentQuote);
+    shareGeneralBtn.addEventListener("click", shareGeneral);
+
+    document.addEventListener("contextmenu", (e) => e.preventDefault(), { passive: false });
+
+    let pressTimer;
+    document.addEventListener("touchstart", () => {
+      pressTimer = setTimeout(() => {}, 500);
+    }, { passive: true });
+
+    document.addEventListener("touchend", () => {
+      clearTimeout(pressTimer);
+    }, { passive: true });
+
+    document.addEventListener("dragstart", (e) => e.preventDefault());
+    document.addEventListener("selectstart", (e) => e.preventDefault());
 
     showQuote(false);
     startAutoRandom();
