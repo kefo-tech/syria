@@ -1,7 +1,7 @@
 /************************************************
  * City Report - Near Reports Alerts
  * نسخة بدون تسجيل دخول + مدة ساعة ثابتة
- * + زر إعادة توسيط + Wake Lock
+ * + زر إعادة توسيط + Wake Lock محسّن
  ************************************************/
 
 /* ================================
@@ -70,6 +70,17 @@ let wakeLockSentinel = null;
 let wakeLockEnabled = false;
 
 const reportAlertState = new Map();
+/*
+ لكل بلاغ:
+ {
+   lastBand: number|null,
+   passed: boolean,
+   minDistance: number,
+   lastDistance: number,
+   enteredNear: boolean,
+   lastSpokenAt: number
+ }
+*/
 
 const REPORT_COLLECTION = "road_reports";
 const MAX_REPORT_FETCH_HOURS = 24;
@@ -755,8 +766,17 @@ function tryBeep() {
 ================================ */
 async function requestWakeLock(isRestore = false) {
   if (!("wakeLock" in navigator)) {
+    wakeLockEnabled = false;
+    wakeLockSentinel = null;
     if (btnWakeLock) btnWakeLock.textContent = "❌ غير مدعوم";
     toast("المتصفح لا يدعم إبقاء الشاشة مضاءة");
+    return false;
+  }
+
+  if (document.visibilityState !== "visible") {
+    if (!isRestore) {
+      toast("افتح الصفحة بالكامل أولاً ثم فعّل الميزة");
+    }
     return false;
   }
 
@@ -772,11 +792,20 @@ async function requestWakeLock(isRestore = false) {
       toast("تم تفعيل إبقاء الشاشة مضاءة");
     }
 
-    wakeLockSentinel.addEventListener("release", () => {
+    wakeLockSentinel.addEventListener("release", async () => {
       wakeLockSentinel = null;
 
       if (wakeLockEnabled && document.visibilityState === "visible") {
-        requestWakeLock(true);
+        try {
+          await requestWakeLock(true);
+        } catch (e) {
+          console.error("reacquire wake lock failed:", e);
+          wakeLockEnabled = false;
+          if (btnWakeLock) {
+            btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
+          }
+          toast("تم فقدان إبقاء الشاشة مضاءة");
+        }
         return;
       }
 
@@ -790,13 +819,19 @@ async function requestWakeLock(isRestore = false) {
     return true;
   } catch (err) {
     console.error("Wake Lock error:", err);
-    wakeLockSentinel = null;
 
-    if (!isRestore) {
-      wakeLockEnabled = false;
-      if (btnWakeLock) btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
-      toast("تعذر تفعيل إبقاء الشاشة مضاءة");
+    wakeLockSentinel = null;
+    wakeLockEnabled = false;
+
+    if (btnWakeLock) {
+      btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
     }
+
+    let msg = "تعذر تفعيل إبقاء الشاشة مضاءة";
+    if (err && err.name) {
+      msg += `: ${err.name}`;
+    }
+    toast(msg);
 
     return false;
   }
@@ -804,13 +839,12 @@ async function requestWakeLock(isRestore = false) {
 
 async function releaseWakeLock() {
   try {
+    wakeLockEnabled = false;
+
     if (wakeLockSentinel) {
       const sentinel = wakeLockSentinel;
       wakeLockSentinel = null;
-      wakeLockEnabled = false;
       await sentinel.release();
-    } else {
-      wakeLockEnabled = false;
     }
   } catch (err) {
     console.error("Wake Lock release error:", err);
