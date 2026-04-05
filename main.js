@@ -256,6 +256,15 @@ function setupInstallPrompt() {
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
       deferredPrompt = null;
+      return;
+    }
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isSafari = isIOS && /safari/.test(ua) && !/crios|fxios|edgios/.test(ua);
+
+    if (isSafari) {
+      alert("في Safari: اضغط زر المشاركة ثم اختر Add to Home Screen.");
     } else {
       alert(T.installHint);
     }
@@ -425,5 +434,5 @@ function getWeatherInfo(code) {
   if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { text: T.rain, icon: "🌧️" };
   if ([71, 73, 75, 77, 85, 86].includes(code)) return { text: T.snow, icon: "❄️" };
   if ([95, 96, 99].includes(code)) return { text: T.thunder, icon: "⛈️" };
-  return { text: T.currentWeatherUnknown || T.cloudy, icon: "🌍" };
+  return { text: T.currentWeatherUnknown, icon: "🌍" };
 }
