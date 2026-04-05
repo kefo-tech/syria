@@ -1,4 +1,4 @@
-const CACHE_NAME = "kefo-syria-v16";
+const CACHE_NAME = "kefo-syria-v17";
 
 const URLS_TO_CACHE = [
   "/syria/",
