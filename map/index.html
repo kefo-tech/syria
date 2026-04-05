@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>City Report | منصة البلاغات القريبة</title>
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="منصة بلاغات طريق ذكية تعرض التنبيهات القريبة على الخريطة مع إنذار صوتي تدريجي حسب المسافة." />
+
+  <link rel="stylesheet" href="./styles.css?v=5" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body>
+  <main class="app-shell">
+    <section class="map-shell">
+      <div id="map" class="map"></div>
+
+      <div class="top-mini-bar">
+        <div class="brand-mini">
+          <div class="brand-dot"></div>
+          <div>
+            <div class="brand-mini-title">منصة البلاغات القريبة</div>
+            <div class="brand-mini-sub">تنبيه مروري لحظي</div>
+          </div>
+        </div>
+
+        <button id="btnMenu" class="icon-btn" type="button" aria-label="القائمة">☰</button>
+      </div>
+
+      <div id="miniMenu" class="mini-menu hidden">
+        <button id="btnLocate" class="menu-btn" type="button">📍 موقعي</button>
+        <button id="btnSound" class="menu-btn" type="button">🔊 الصوت مفعل</button>
+        <button id="btnWakeLock" class="menu-btn" type="button">🔆 إبقاء الشاشة مضاءة</button>
+        <button id="btnTogglePanel" class="menu-btn" type="button">البلاغات</button>
+      </div>
+
+      <div class="live-location-pill" id="liveLocationPill">
+        <span class="live-dot"></span>
+        <span id="liveLocationText">جاري تحديد الموقع…</span>
+      </div>
+
+      <div class="alert-box hidden" id="activeAlertBox">
+        <div class="alert-title" id="alertTitle">تنبيه قريب</div>
+        <div class="alert-sub" id="alertSub">يوجد بلاغ قريب أمامك</div>
+      </div>
+
+      <button id="btnQuickAdd" class="fab" type="button" aria-label="إضافة بلاغ">＋</button>
+    </section>
+
+    <aside id="sidePanel" class="side-panel hidden-mobile">
+      <div class="panel-head">
+        <div class="panel-title">البلاغات</div>
+
+        <div class="filters">
+          <select id="radius">
+            <option value="700" selected>700 متر</option>
+            <option value="1000">1 كم</option>
+            <option value="1500">1.5 كم</option>
+            <option value="3000">3 كم</option>
+          </select>
+
+          <select id="typeFilter">
+            <option value="all" selected>كل الأنواع</option>
+            <option value="زحمة">زحمة</option>
+            <option value="حفرة">حفرة</option>
+            <option value="أعمال بناء">أعمال بناء</option>
+            <option value="حادث">حادث</option>
+            <option value="إغلاق طريق">إغلاق طريق</option>
+            <option value="جسم خطر">جسم خطر</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+
+          <button id="btnRefresh" class="btn ghost small" type="button">تحديث</button>
+        </div>
+      </div>
+
+      <div class="status-bar" id="status">جاهز...</div>
+      <div id="feed" class="feed"></div>
+    </aside>
+  </main>
+
+  <div id="modalAdd" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-title">إضافة بلاغ جديد</div>
+
+      <div class="modal-row">
+        <select id="reportType">
+          <option value="زحمة">زحمة</option>
+          <option value="حفرة">حفرة</option>
+          <option value="أعمال بناء">أعمال بناء</option>
+          <option value="حادث">حادث</option>
+          <option value="إغلاق طريق">إغلاق طريق</option>
+          <option value="جسم خطر">جسم خطر</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+      </div>
+
+      <div class="modal-row">
+        <textarea id="reportText" rows="4" placeholder="اكتب وصفًا مختصرًا للبلاغ..."></textarea>
+      </div>
+
+      <div class="hint">مدة البلاغ ساعة واحدة فقط، وبعدها يمكن لأي شخص إرسال بلاغ جديد إذا استمرت المشكلة.</div>
+
+      <div class="modal-actions">
+        <button id="btnSubmitReport" class="btn primary" type="button">نشر البلاغ</button>
+        <button class="btn ghost" type="button" data-close="#modalAdd">إغلاق</button>
+      </div>
+
+      <div id="addMsg" class="hint"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    document.addEventListener("click", (e) => {
+      const close = e.target?.getAttribute?.("data-close");
+      if (close) {
+        const modal = document.querySelector(close);
+        if (modal) modal.classList.add("hidden");
+      }
+    });
+  </script>
+
+  <script src="./app.js?v=5"></script>
+</body>
+</html>
