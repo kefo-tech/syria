@@ -8,30 +8,23 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="بوابة خدمات ذكية" />
 
-  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body oncontextmenu="return false">
 
   <div class="container">
 
-    <!-- أزرار أعلى -->
     <div class="header-actions">
       <button class="top-action-btn" id="installBtn"></button>
       <button class="top-action-btn" id="shareBtn"></button>
     </div>
 
-    <!-- البطاقات -->
     <section class="top-cards">
 
-      <!-- الطقس -->
       <div class="glass-card weather-card">
-
         <div class="weather-scene day scene-sunny" id="weatherScene">
           <div class="sun"></div>
           <div class="moon"></div>
@@ -57,7 +50,9 @@
             <span></span><span></span><span></span>
           </div>
 
-          <div class="lightning"><span></span></div>
+          <div class="lightning">
+            <span></span>
+          </div>
         </div>
 
         <div class="card-head">
@@ -68,9 +63,7 @@
         <div id="weatherContent" class="loading-text"></div>
       </div>
 
-      <!-- الموقع -->
       <div class="glass-card location-card">
-
         <div class="card-head">
           <h2 class="card-title" id="locationCardTitle"></h2>
           <div class="badge" id="locationBadge"></div>
@@ -85,7 +78,6 @@
 
     </section>
 
-    <!-- الخدمات -->
     <section>
       <h3 class="services-title" id="servicesTitle"></h3>
 
@@ -94,14 +86,9 @@
       <div class="osm-note" id="osmNote"></div>
     </section>
 
-    <!-- الحقوق -->
     <div class="copyright" id="copyrightText"></div>
-
   </div>
 
-  <!-- JS -->
-  <script src="lang.js"></script>
-  <script src="app.js"></script>
-
+  <script type="module" src="main.js"></script>
 </body>
 </html>
