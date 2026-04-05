@@ -94,7 +94,6 @@ const weatherContent = document.getElementById("weatherContent");
 const weatherBadge = document.getElementById("weatherBadge");
 const areaName = document.getElementById("areaName");
 const locationBadge = document.getElementById("locationBadge");
-const shareBtn = document.getElementById("shareBtn");
 const installBtn = document.getElementById("installBtn");
 const weatherScene = document.getElementById("weatherScene");
 
@@ -107,7 +106,6 @@ function init() {
   buildServices();
   registerServiceWorker();
   setupInstallPrompt();
-  setupShare();
   setupBottomActions();
   setupProtection();
 
@@ -144,8 +142,7 @@ function applyTranslations() {
   document.documentElement.dir = APP_LANG === "ar" ? "rtl" : "ltr";
   document.title = T.title;
 
-  installBtn.textContent = T.install;
-  shareBtn.textContent = T.share;
+  if (installBtn) installBtn.textContent = T.install;
 
   document.getElementById("weatherCardTitle").textContent = T.weatherCardTitle;
   document.getElementById("locationCardTitle").textContent = T.locationCardTitle;
@@ -248,7 +245,7 @@ function registerServiceWorker() {
 
 function setupInstallPrompt() {
   const markInstalledUI = () => {
-    installBtn.style.display = "none";
+    if (installBtn) installBtn.style.display = "none";
     const bottomInstallBtn = document.getElementById("bottomInstallBtn");
     if (bottomInstallBtn) bottomInstallBtn.style.display = "none";
   };
@@ -285,31 +282,14 @@ function setupInstallPrompt() {
     }
   };
 
-  installBtn.addEventListener("click", handleInstall);
+  if (installBtn) {
+    installBtn.addEventListener("click", handleInstall);
+  }
 
   const bottomInstallBtn = document.getElementById("bottomInstallBtn");
   if (bottomInstallBtn) {
     bottomInstallBtn.addEventListener("click", handleInstall);
   }
-}
-
-function setupShare() {
-  shareBtn.addEventListener("click", async () => {
-    const shareData = {
-      title: T.title,
-      text: T.shareText,
-      url: window.location.href
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert(T.copied);
-      }
-    } catch (_) {}
-  });
 }
 
 function setupBottomActions() {
