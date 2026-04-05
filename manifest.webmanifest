@@ -1,14 +1,11 @@
 {
-  "name": "1بوابة الخدمات - KeFo.tech",
-  "short_name": "KeFo Services",
+  "name": "KeFo.tech",
+  "short_name": "KeFo",
   "start_url": "/syria/",
   "scope": "/syria/",
   "display": "standalone",
-  "background_color": "#081120",
+  "background_color": "#06111f",
   "theme_color": "#0f172a",
-  "lang": "ar",
-  "dir": "rtl",
-  "description": "بوابة خدمات ذكية قابلة للتوسعة من KeFo.tech",
   "icons": [
     {
       "src": "/syria/icons/icon-192.png",
