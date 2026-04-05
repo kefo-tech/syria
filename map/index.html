@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>City Report | .منصة البلاغات القريبة</title>
+  <title>City Report | منصة البلاغات القريبة</title>
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="منصة بلاغات طريق ذكية تعرض التنبيهات القريبة على الخريطة مع إنذار صوتي تدريجي حسب المسافة." />
 
-  <link rel="stylesheet" href="./styles.css?v=5" />
+  <link rel="stylesheet" href="./styles.css?v=6" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
@@ -15,6 +15,19 @@
   <main class="app-shell">
     <section class="map-shell">
       <div id="map" class="map"></div>
+
+      <!-- غطاء بداية القيادة -->
+      <div id="driveOverlay" class="drive-overlay">
+        <div class="drive-overlay-card">
+          <div class="drive-overlay-title">جاهز للقيادة؟</div>
+          <div class="drive-overlay-text">
+            اضغط لبدء وضع القيادة، وسيحاول التطبيق إبقاء الشاشة مضاءة أثناء الاستخدام.
+          </div>
+          <button id="btnStartDriving" class="drive-start-btn" type="button">
+            ابدأ القيادة الآن
+          </button>
+        </div>
+      </div>
 
       <div class="top-mini-bar">
         <div class="brand-mini">
@@ -31,7 +44,6 @@
       <div id="miniMenu" class="mini-menu hidden">
         <button id="btnLocate" class="menu-btn" type="button">📍 موقعي</button>
         <button id="btnSound" class="menu-btn" type="button">🔊 الصوت مفعل</button>
-        <button id="btnWakeLock" class="menu-btn" type="button">🔆 إبقاء الشاشة مضاءة</button>
         <button id="btnTogglePanel" class="menu-btn" type="button">البلاغات</button>
       </div>
 
@@ -127,6 +139,6 @@
     });
   </script>
 
-  <script src="./app.js?v=5"></script>
+  <script src="./app.js?v=6"></script>
 </body>
 </html>
