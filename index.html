@@ -3,88 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>KeFo.tech</title>
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="بوابة خدمات ذكية" />
 
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body oncontextmenu="return false">
 
-  <div class="container">
+  <div class="page-shell">
+    <div class="container">
 
-    <div class="header-actions">
-      <button class="top-action-btn" id="installBtn"></button>
-      <button class="top-action-btn" id="shareBtn"></button>
+      <div class="header-actions">
+        <button class="top-action-btn" id="installBtn"></button>
+      </div>
+
+      <section class="top-cards">
+
+        <div class="glass-card weather-card">
+          <div class="weather-scene day scene-sunny" id="weatherScene">
+            <div class="sun"></div>
+            <div class="moon"></div>
+
+            <div class="stars">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="cloud a"></div>
+            <div class="cloud b"></div>
+
+            <div class="rain">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="snow">
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+            </div>
+
+            <div class="fog">
+              <span></span><span></span><span></span>
+            </div>
+
+            <div class="lightning">
+              <span></span>
+            </div>
+          </div>
+
+          <div class="card-head">
+            <h2 class="card-title" id="weatherCardTitle"></h2>
+            <div class="badge" id="weatherBadge"></div>
+          </div>
+
+          <div id="weatherContent" class="loading-text"></div>
+        </div>
+
+        <div class="glass-card location-card">
+          <div class="card-head">
+            <h2 class="card-title" id="locationCardTitle"></h2>
+            <div class="badge" id="locationBadge"></div>
+          </div>
+
+          <div class="location-card-content">
+            <div class="welcome-text" id="welcomeText"></div>
+            <h1 class="area-name" id="areaName"></h1>
+            <div class="location-subline" id="locationSubline"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section>
+        <h3 class="services-title" id="servicesTitle"></h3>
+        <div class="services-grid" id="servicesGrid"></div>
+        <div class="osm-note" id="osmNote"></div>
+      </section>
+
     </div>
 
-    <section class="top-cards">
+    <div class="fixed-bottom-wrap">
+      <div class="bottom-quick-actions">
+        <button class="quick-action-btn" id="bottomShareBtn" aria-label="Share">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16V5"></path>
+            <path d="M8 9l4-4 4 4"></path>
+            <path d="M5 15v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3"></path>
+          </svg>
+        </button>
 
-      <div class="glass-card weather-card">
-        <div class="weather-scene day scene-sunny" id="weatherScene">
-          <div class="sun"></div>
-          <div class="moon"></div>
+        <button class="quick-action-btn" id="bottomInstallBtn" aria-label="Install">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v10"></path>
+            <path d="M8 9l4 4 4-4"></path>
+            <path d="M5 19h14"></path>
+          </svg>
+        </button>
 
-          <div class="stars">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
+        <button class="quick-action-btn" id="bottomHomeBtn" aria-label="Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 11.5L12 4l9 7.5"></path>
+            <path d="M6 10.5V20h12v-9.5"></path>
+          </svg>
+        </button>
 
-          <div class="cloud a"></div>
-          <div class="cloud b"></div>
-
-          <div class="rain">
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-          </div>
-
-          <div class="snow">
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-          </div>
-
-          <div class="fog">
-            <span></span><span></span><span></span>
-          </div>
-
-          <div class="lightning">
-            <span></span>
-          </div>
-        </div>
-
-        <div class="card-head">
-          <h2 class="card-title" id="weatherCardTitle"></h2>
-          <div class="badge" id="weatherBadge"></div>
-        </div>
-
-        <div id="weatherContent" class="loading-text"></div>
+        <button class="quick-action-btn" id="bottomTopBtn" aria-label="Top">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 19V7"></path>
+            <path d="M7 12l5-5 5 5"></path>
+          </svg>
+        </button>
       </div>
 
-      <div class="glass-card location-card">
-        <div class="card-head">
-          <h2 class="card-title" id="locationCardTitle"></h2>
-          <div class="badge" id="locationBadge"></div>
-        </div>
-
-        <div class="location-card-content">
-          <div class="welcome-text" id="welcomeText"></div>
-          <h1 class="area-name" id="areaName"></h1>
-          <div class="location-subline" id="locationSubline"></div>
-        </div>
-      </div>
-
-    </section>
-
-    <section>
-      <h3 class="services-title" id="servicesTitle"></h3>
-      <div class="services-grid" id="servicesGrid"></div>
-      <div class="osm-note" id="osmNote"></div>
-    </section>
-
-    <div class="copyright" id="copyrightText"></div>
+      <div class="copyright fixed-copyright" id="copyrightText"></div>
+    </div>
   </div>
 
   <script type="module" src="main.js"></script>
