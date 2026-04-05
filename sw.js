@@ -1,10 +1,22 @@
-const CACHE_NAME = "kefo-syria-v15";
+const CACHE_NAME = "kefo-syria-v16";
+
 const URLS_TO_CACHE = [
   "/syria/",
   "/syria/index.html",
+  "/syria/style.css",
+  "/syria/lang.js",
+  "/syria/main.js",
   "/syria/manifest.webmanifest",
+  "/syria/icons/icon-192.png",
+  "/syria/icons/icon-512.png",
   "/syria/qibla/",
-  "/syria/qibla/index.html"
+  "/syria/qibla/index.html",
+  "/syria/salah/",
+  "/syria/salah/index.html",
+  "/syria/post/",
+  "/syria/post/index.html",
+  "/syria/map/",
+  "/syria/map/index.html"
 ];
 
 self.addEventListener("install", (event) => {
@@ -30,9 +42,15 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request);
+      if (cached) return cached;
+
+      return fetch(event.request).catch(() => {
+        return caches.match("/syria/index.html");
+      });
     })
   );
 });
