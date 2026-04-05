@@ -1,7 +1,5 @@
 /************************************************
- * City Report - Near Reports Alerts
- * نسخة بدون تسجيل دخول + مدة ساعة ثابتة
- * + زر إعادة توسيط + Wake Lock محسّن
+ * Navigation Mode - City Report
  ************************************************/
 
 /* ================================
@@ -29,14 +27,13 @@ const btnLocate = $("btnLocate");
 const btnRefresh = $("btnRefresh");
 const btnSubmitReport = $("btnSubmitReport");
 const btnSound = $("btnSound");
-const btnWakeLock = $("btnWakeLock");
+const btnOpenPanel = $("btnOpenPanel");
+const btnClosePanel = $("btnClosePanel");
+const btnStartDriving = $("btnStartDriving");
 
-const btnMenu = $("btnMenu");
-const miniMenu = $("miniMenu");
-const btnTogglePanel = $("btnTogglePanel");
 const sidePanel = $("sidePanel");
-
 const modalAdd = $("modalAdd");
+const driveOverlay = $("driveOverlay");
 
 const reportType = $("reportType");
 const reportText = $("reportText");
@@ -68,19 +65,9 @@ let soundEnabled = true;
 
 let wakeLockSentinel = null;
 let wakeLockEnabled = false;
+let drivingStarted = false;
 
 const reportAlertState = new Map();
-/*
- لكل بلاغ:
- {
-   lastBand: number|null,
-   passed: boolean,
-   minDistance: number,
-   lastDistance: number,
-   enteredNear: boolean,
-   lastSpokenAt: number
- }
-*/
 
 const REPORT_COLLECTION = "road_reports";
 const MAX_REPORT_FETCH_HOURS = 24;
@@ -96,14 +83,13 @@ subscribeReports();
 setupProtection();
 
 /* ================================
-   UI Bindings
+   UI
 ================================ */
 function bindUI() {
   btnQuickAdd?.addEventListener("click", openAddModal);
 
   btnLocate?.addEventListener("click", () => {
     centerOnUser();
-    miniMenu?.classList.add("hidden");
   });
 
   btnRefresh?.addEventListener("click", () => {
@@ -115,33 +101,27 @@ function bindUI() {
 
   btnSound?.addEventListener("click", () => {
     toggleSound();
-    miniMenu?.classList.add("hidden");
   });
 
-  btnWakeLock?.addEventListener("click", async () => {
-    await toggleWakeLock();
-    miniMenu?.classList.add("hidden");
+  btnOpenPanel?.addEventListener("click", () => {
+    sidePanel?.classList.remove("hidden-panel");
   });
 
-  btnMenu?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    miniMenu?.classList.toggle("hidden");
+  btnClosePanel?.addEventListener("click", () => {
+    sidePanel?.classList.add("hidden-panel");
   });
 
-  btnTogglePanel?.addEventListener("click", () => {
-    sidePanel?.classList.toggle("hidden-mobile");
-    miniMenu?.classList.add("hidden");
+  btnStartDriving?.addEventListener("click", async () => {
+    drivingStarted = true;
+    driveOverlay?.classList.add("hidden");
+    sidePanel?.classList.add("hidden-panel");
+    centerOnUser();
+    await requestWakeLock(false);
+    toast("تم بدء وضع القيادة");
   });
 
   radiusEl?.addEventListener("change", renderAll);
   typeFilterEl?.addEventListener("change", renderAll);
-
-  document.addEventListener("click", (e) => {
-    if (!miniMenu || !btnMenu) return;
-    if (!miniMenu.contains(e.target) && e.target !== btnMenu) {
-      miniMenu.classList.add("hidden");
-    }
-  });
 
   document.addEventListener("visibilitychange", async () => {
     if (document.visibilityState === "visible" && wakeLockEnabled && !wakeLockSentinel) {
@@ -164,8 +144,6 @@ function initMap() {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
-  addRecenterControl();
-
   if ("geolocation" in navigator) {
     watchId = navigator.geolocation.watchPosition(
       onLocationUpdate,
@@ -179,46 +157,6 @@ function initMap() {
   } else {
     setStatus("المتصفح لا يدعم تحديد الموقع.");
   }
-}
-
-function addRecenterControl() {
-  const RecenterControl = L.Control.extend({
-    options: { position: "bottomright" },
-
-    onAdd: function () {
-      const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
-      container.style.background = "#ffffff";
-      container.style.borderRadius = "14px";
-      container.style.overflow = "hidden";
-      container.style.boxShadow = "0 8px 20px rgba(0,0,0,0.18)";
-      container.style.marginBottom = "110px";
-      container.style.marginRight = "10px";
-
-      const button = L.DomUtil.create("button", "", container);
-      button.type = "button";
-      button.innerHTML = "◎";
-      button.title = "إعادة التوسيط";
-      button.setAttribute("aria-label", "إعادة التوسيط");
-      button.style.width = "52px";
-      button.style.height = "52px";
-      button.style.border = "none";
-      button.style.background = "#ffffff";
-      button.style.cursor = "pointer";
-      button.style.fontSize = "24px";
-      button.style.fontWeight = "700";
-      button.style.color = "#0f172a";
-
-      L.DomEvent.disableClickPropagation(container);
-      L.DomEvent.on(button, "click", function (e) {
-        L.DomEvent.stop(e);
-        centerOnUser();
-      });
-
-      return container;
-    }
-  });
-
-  map.addControl(new RecenterControl());
 }
 
 function onLocationUpdate(pos) {
@@ -283,7 +221,7 @@ function centerOnUser() {
 }
 
 /* ================================
-   Reports Subscription
+   Firestore
 ================================ */
 function subscribeReports() {
   const cutoff = Date.now() - (MAX_REPORT_FETCH_HOURS * 60 * 60 * 1000);
@@ -313,7 +251,7 @@ function cleanupExpiredLocally() {
 }
 
 /* ================================
-   Add Report
+   Reports
 ================================ */
 function openAddModal() {
   if (!userPosition) {
@@ -395,7 +333,7 @@ function getFilteredReports(nearbyOnly = false) {
   const radius = Number(radiusEl?.value || DEFAULT_RADIUS);
   const typeFilter = typeFilterEl?.value || "all";
 
-  let list = reports
+  return reports
     .filter(r => {
       if (typeFilter !== "all" && r.type !== typeFilter) return false;
       if (nearbyOnly && userPosition) {
@@ -409,13 +347,9 @@ function getFilteredReports(nearbyOnly = false) {
       distance: userPosition ? haversine(userPosition.lat, userPosition.lng, r.lat, r.lng) : null
     }))
     .sort((a, b) => {
-      if (userPosition && a.distance != null && b.distance != null) {
-        return a.distance - b.distance;
-      }
+      if (userPosition && a.distance != null && b.distance != null) return a.distance - b.distance;
       return (b.createdAt || 0) - (a.createdAt || 0);
     });
-
-  return list;
 }
 
 function reportCardHTML(r) {
@@ -466,7 +400,6 @@ function bindFeedActions(root) {
 
 function updateStatusSummary() {
   if (!statusEl) return;
-
   const allCount = reports.length;
   const nearbyCount = getFilteredReports(true).length;
 
@@ -483,7 +416,6 @@ function syncMarkers() {
 
   for (const r of reports) {
     seen.add(r.id);
-
     let marker = markerMap.get(r.id);
     const latlng = [r.lat, r.lng];
 
@@ -553,19 +485,15 @@ function focusReport(id) {
   if (!report) return;
 
   map.setView([report.lat, report.lng], 17);
-
   const marker = markerMap.get(id);
   if (marker) marker.openPopup();
 
-  if (window.innerWidth <= 980 && sidePanel) {
-    sidePanel.classList.add("hidden-mobile");
-  }
-
+  sidePanel?.classList.add("hidden-panel");
   toast(`تم التركيز على بلاغ: ${report.type}`);
 }
 
 /* ================================
-   Confirm / Dismiss
+   Update Counters
 ================================ */
 async function confirmReport(id) {
   try {
@@ -592,7 +520,7 @@ async function dismissReport(id) {
 }
 
 /* ================================
-   Alert Logic
+   Alerts
 ================================ */
 function checkNearbyAlerts() {
   if (!userPosition || !reports.length) {
@@ -650,13 +578,8 @@ function processProgressiveAlert(report) {
 
   if (st.passed) return;
 
-  if (distance < st.minDistance) {
-    st.minDistance = distance;
-  }
-
-  if (distance <= 700) {
-    st.enteredNear = true;
-  }
+  if (distance < st.minDistance) st.minDistance = distance;
+  if (distance <= 700) st.enteredNear = true;
 
   if (st.enteredNear && st.minDistance <= 60 && distance > 120 && distance > st.lastDistance + 20) {
     st.passed = true;
@@ -693,14 +616,8 @@ function updateActiveAlertBox(report) {
   }
 
   activeAlertBox.classList.remove("hidden");
-
-  if (alertTitle) {
-    alertTitle.textContent = `تنبيه قريب: ${report.type}`;
-  }
-
-  if (alertSub) {
-    alertSub.textContent = `${Math.round(report.distance)} متر • ${report.text || "بدون وصف"}`;
-  }
+  if (alertTitle) alertTitle.textContent = `تنبيه قريب: ${report.type}`;
+  if (alertSub) alertSub.textContent = `${Math.round(report.distance)} متر • ${report.text || "بدون وصف"}`;
 }
 
 function speakAlert(report, distance) {
@@ -728,11 +645,7 @@ function speakAlert(report, distance) {
 ================================ */
 function toggleSound() {
   soundEnabled = !soundEnabled;
-
-  if (btnSound) {
-    btnSound.textContent = soundEnabled ? "🔊 الصوت مفعل" : "🔇 الصوت متوقف";
-  }
-
+  if (btnSound) btnSound.textContent = soundEnabled ? "🔊" : "🔇";
   toast(soundEnabled ? "تم تفعيل الصوت" : "تم إيقاف الصوت");
 }
 
@@ -768,15 +681,12 @@ async function requestWakeLock(isRestore = false) {
   if (!("wakeLock" in navigator)) {
     wakeLockEnabled = false;
     wakeLockSentinel = null;
-    if (btnWakeLock) btnWakeLock.textContent = "❌ غير مدعوم";
     toast("المتصفح لا يدعم إبقاء الشاشة مضاءة");
     return false;
   }
 
   if (document.visibilityState !== "visible") {
-    if (!isRestore) {
-      toast("افتح الصفحة بالكامل أولاً ثم فعّل الميزة");
-    }
+    if (!isRestore) toast("افتح الصفحة بالكامل أولاً ثم فعّل وضع القيادة");
     return false;
   }
 
@@ -784,13 +694,7 @@ async function requestWakeLock(isRestore = false) {
     wakeLockSentinel = await navigator.wakeLock.request("screen");
     wakeLockEnabled = true;
 
-    if (btnWakeLock) {
-      btnWakeLock.textContent = "🌙 إلغاء إبقاء الشاشة مضاءة";
-    }
-
-    if (!isRestore) {
-      toast("تم تفعيل إبقاء الشاشة مضاءة");
-    }
+    if (!isRestore) toast("تم تفعيل إبقاء الشاشة مضاءة");
 
     wakeLockSentinel.addEventListener("release", async () => {
       wakeLockSentinel = null;
@@ -801,66 +705,26 @@ async function requestWakeLock(isRestore = false) {
         } catch (e) {
           console.error("reacquire wake lock failed:", e);
           wakeLockEnabled = false;
-          if (btnWakeLock) {
-            btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
-          }
           toast("تم فقدان إبقاء الشاشة مضاءة");
         }
         return;
       }
 
       wakeLockEnabled = false;
-      if (btnWakeLock) {
-        btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
-      }
       toast("تم إلغاء إبقاء الشاشة مضاءة");
     });
 
     return true;
   } catch (err) {
     console.error("Wake Lock error:", err);
-
     wakeLockSentinel = null;
     wakeLockEnabled = false;
 
-    if (btnWakeLock) {
-      btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
-    }
-
     let msg = "تعذر تفعيل إبقاء الشاشة مضاءة";
-    if (err && err.name) {
-      msg += `: ${err.name}`;
-    }
+    if (err && err.name) msg += `: ${err.name}`;
     toast(msg);
 
     return false;
-  }
-}
-
-async function releaseWakeLock() {
-  try {
-    wakeLockEnabled = false;
-
-    if (wakeLockSentinel) {
-      const sentinel = wakeLockSentinel;
-      wakeLockSentinel = null;
-      await sentinel.release();
-    }
-  } catch (err) {
-    console.error("Wake Lock release error:", err);
-  } finally {
-    if (btnWakeLock) {
-      btnWakeLock.textContent = "🔆 إبقاء الشاشة مضاءة";
-    }
-  }
-}
-
-async function toggleWakeLock() {
-  if (wakeLockEnabled) {
-    await releaseWakeLock();
-    toast("تم إلغاء إبقاء الشاشة مضاءة");
-  } else {
-    await requestWakeLock(false);
   }
 }
 
@@ -877,17 +741,6 @@ function setupProtection() {
   }, { passive: false });
 
   document.addEventListener("dragstart", (e) => e.preventDefault(), { passive: false });
-
-  let pressTimer = null;
-
-  document.addEventListener("touchstart", () => {
-    clearTimeout(pressTimer);
-    pressTimer = setTimeout(() => {}, 700);
-  }, { passive: true });
-
-  document.addEventListener("touchend", () => {
-    clearTimeout(pressTimer);
-  }, { passive: true });
 }
 
 /* ================================
@@ -949,10 +802,8 @@ function escapeClassName(str = "") {
 
 function toast(msg) {
   if (!toastEl) return;
-
   toastEl.textContent = msg;
   toastEl.classList.remove("hidden");
-
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(() => {
     toastEl.classList.add("hidden");
