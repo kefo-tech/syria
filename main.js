@@ -108,6 +108,7 @@ function init() {
   registerServiceWorker();
   setupInstallPrompt();
   setupShare();
+  setupBottomActions();
   setupProtection();
 
   if (!navigator.geolocation) {
@@ -246,12 +247,26 @@ function registerServiceWorker() {
 }
 
 function setupInstallPrompt() {
+  const markInstalledUI = () => {
+    installBtn.style.display = "none";
+    const bottomInstallBtn = document.getElementById("bottomInstallBtn");
+    if (bottomInstallBtn) bottomInstallBtn.style.display = "none";
+  };
+
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
   });
 
-  installBtn.addEventListener("click", async () => {
+  window.addEventListener("appinstalled", () => {
+    markInstalledUI();
+  });
+
+  if (window.matchMedia("(display-mode: standalone)").matches) {
+    markInstalledUI();
+  }
+
+  const handleInstall = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
@@ -268,7 +283,14 @@ function setupInstallPrompt() {
     } else {
       alert(T.installHint);
     }
-  });
+  };
+
+  installBtn.addEventListener("click", handleInstall);
+
+  const bottomInstallBtn = document.getElementById("bottomInstallBtn");
+  if (bottomInstallBtn) {
+    bottomInstallBtn.addEventListener("click", handleInstall);
+  }
 }
 
 function setupShare() {
@@ -288,6 +310,43 @@ function setupShare() {
       }
     } catch (_) {}
   });
+}
+
+function setupBottomActions() {
+  const bottomShareBtn = document.getElementById("bottomShareBtn");
+  const bottomHomeBtn = document.getElementById("bottomHomeBtn");
+  const bottomTopBtn = document.getElementById("bottomTopBtn");
+
+  if (bottomShareBtn) {
+    bottomShareBtn.addEventListener("click", async () => {
+      const shareData = {
+        title: T.title,
+        text: T.shareText,
+        url: window.location.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          alert(T.copied);
+        }
+      } catch (_) {}
+    });
+  }
+
+  if (bottomHomeBtn) {
+    bottomHomeBtn.addEventListener("click", () => {
+      window.location.href = "/syria/";
+    });
+  }
+
+  if (bottomTopBtn) {
+    bottomTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 }
 
 function setupProtection() {
