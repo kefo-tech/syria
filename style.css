@@ -10,6 +10,7 @@
   --accent2:#61e59a;
   --shadow:0 18px 45px rgba(0,0,0,.28);
   --radius:26px;
+  --bottom-safe:126px;
 }
 
 *{
@@ -49,10 +50,15 @@ body::before{
   opacity:.6;
 }
 
+.page-shell{
+  min-height:100vh;
+  position:relative;
+}
+
 .container{
   width:min(1120px, 94%);
   margin:auto;
-  padding:18px 0 30px;
+  padding:18px 0 calc(30px + var(--bottom-safe));
 }
 
 .header-actions{
@@ -607,13 +613,63 @@ body::before{
   line-height:1.6;
 }
 
-.copyright{
-  margin-top:26px;
+/* Fixed bottom */
+.fixed-bottom-wrap{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:50;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg, rgba(6,17,31,0), rgba(6,17,31,.65) 30%, rgba(6,17,31,.96));
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.bottom-quick-actions{
+  width:min(1120px, 94%);
+  margin:0 auto 8px;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+}
+
+.quick-action-btn{
+  height:48px;
+  border:none;
+  outline:none;
+  cursor:pointer;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.12);
+  display:grid;
+  place-items:center;
+  box-shadow:var(--shadow);
+  color:#eaf6ff;
+}
+
+.quick-action-btn svg{
+  width:22px;
+  height:22px;
+  stroke:#eaf6ff;
+  fill:none;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.quick-action-btn:hover{
+  transform:translateY(-2px);
+}
+
+.fixed-copyright{
+  width:min(1120px, 94%);
+  margin:0 auto;
   text-align:center;
   color:#cbd5e1;
-  font-size:clamp(.76rem, 1.6vw, .92rem);
-  opacity:.92;
-  padding:14px 10px;
+  font-size:clamp(.74rem, 1.5vw, .9rem);
+  opacity:.95;
+  padding:10px 8px 2px;
   border-top:1px solid rgba(255,255,255,.08);
 }
 
@@ -691,7 +747,7 @@ body::before{
 @media (max-width: 700px){
   .container{
     width:min(97%, 97%);
-    padding:12px 0 24px;
+    padding:12px 0 calc(22px + var(--bottom-safe));
   }
 
   .header-actions{
@@ -753,6 +809,15 @@ body::before{
 
   .service-sub{
     display:none;
+  }
+
+  .bottom-quick-actions{
+    gap:8px;
+  }
+
+  .quick-action-btn{
+    height:44px;
+    border-radius:16px;
   }
 }
 
@@ -824,5 +889,13 @@ body::before{
   .top-action-btn{
     font-size:.8rem;
     padding:11px 14px;
+  }
+
+  .bottom-quick-actions{
+    gap:6px;
+  }
+
+  .quick-action-btn{
+    height:42px;
   }
 }
