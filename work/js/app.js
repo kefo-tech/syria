@@ -5,10 +5,26 @@ const storesGrid = document.getElementById("storesGrid");
 const emptyState = document.getElementById("emptyState");
 const resultsCount = document.getElementById("resultsCount");
 const locationStatus = document.getElementById("locationStatus");
-const locateBtn = document.getElementById("locateBtn");
+const welcomeText = document.getElementById("welcomeText");
+
+/* حماية */
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("selectstart", e => e.preventDefault());
+document.addEventListener("dragstart", e => e.preventDefault());
+
+document.addEventListener("keydown", e => {
+  const key = e.key.toLowerCase();
+  if (
+    (e.ctrlKey && ["u", "c", "x", "s", "a"].includes(key)) ||
+    e.key === "F12"
+  ) {
+    e.preventDefault();
+  }
+});
 
 let userLocation = null;
-let renderedStores = [];
 
 function toRadians(deg) {
   return deg * (Math.PI / 180);
@@ -39,7 +55,7 @@ function matchesSearch(store, query) {
 
   const q = normalizeText(query);
 
-  const textPool = [
+  const pool = [
     store.name,
     store.type,
     store.city,
@@ -47,11 +63,9 @@ function matchesSearch(store, query) {
     store.address,
     store.description,
     ...(store.keywords || [])
-  ]
-    .join(" ")
-    .toLowerCase();
+  ].join(" ").toLowerCase();
 
-  return textPool.includes(q);
+  return pool.includes(q);
 }
 
 function createStoreCard(store) {
@@ -62,21 +76,19 @@ function createStoreCard(store) {
 
   return `
     <article class="store-card">
-      <img class="store-image" src="${store.cover}" alt="${store.name}" />
+      <div class="store-card-image-wrap">
+        <img class="store-card-image" src="${store.cover}" alt="${store.name}" />
+        <span class="store-card-type">${store.type}</span>
+      </div>
+
       <div class="store-card-body">
-        <div class="store-top-row">
-          <div>
-            <h3 class="store-name">${store.name}</h3>
-            <p class="store-meta">${store.city} - ${store.area}</p>
-          </div>
-          <span class="store-type">${store.type}</span>
-        </div>
+        <h3 class="store-card-title">${store.name}</h3>
+        <p class="store-card-meta">${store.city} - ${store.area}</p>
+        <p class="store-card-desc">${store.description}</p>
 
-        <p class="store-desc">${store.description}</p>
-
-        <div class="store-footer">
-          <span class="distance-badge">يبعد: ${distanceText}</span>
-          <a class="view-btn" href="store.html?id=${store.id}">عرض</a>
+        <div class="store-card-footer">
+          <span class="distance-pill">يبعد: ${distanceText}</span>
+          <a class="view-store-btn" href="store.html?id=${store.id}">عرض المتجر</a>
         </div>
       </div>
     </article>
@@ -84,8 +96,6 @@ function createStoreCard(store) {
 }
 
 function renderStores(stores) {
-  renderedStores = stores;
-
   if (!stores.length) {
     storesGrid.innerHTML = "";
     emptyState.classList.remove("hidden");
@@ -128,31 +138,59 @@ function applyFilters() {
   renderStores(filtered);
 }
 
+async function updateWelcomeLocation(lat, lng) {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ar`
+    );
+    const data = await res.json();
+
+    const areaName =
+      data?.address?.suburb ||
+      data?.address?.borough ||
+      data?.address?.city_district ||
+      data?.address?.neighbourhood ||
+      data?.address?.quarter ||
+      data?.address?.town ||
+      data?.address?.city ||
+      data?.address?.village ||
+      "منطقتك";
+
+    welcomeText.textContent = `أهلاً بك في: ${areaName}`;
+  } catch (err) {
+    welcomeText.textContent = "أهلاً بك في: منطقتك";
+  }
+}
+
 function setFallbackLocation() {
   userLocation = {
     lat: 51.4556,
     lng: 7.0116
   };
-  locationStatus.textContent = "تم استخدام موقع افتراضي لعرض النتائج القريبة";
+
+  locationStatus.textContent = "تعذر تحديد موقعك، تم استخدام موقع افتراضي";
+  welcomeText.textContent = "أهلاً بك في: Essen";
   applyFilters();
 }
 
-function handleLocationSuccess(position) {
+async function handleLocationSuccess(position) {
   userLocation = {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   };
-  locationStatus.textContent = "تم تحديد موقعك وعرض الأعمال ضمن 3 كم";
+
+  locationStatus.textContent = "تم تحديد موقعك بنجاح";
+  await updateWelcomeLocation(userLocation.lat, userLocation.lng);
   applyFilters();
 }
 
 function handleLocationError() {
-  locationStatus.textContent = "تعذر تحديد موقعك، تم استخدام موقع افتراضي";
   setFallbackLocation();
 }
 
 function requestLocation() {
-  locationStatus.textContent = "جارٍ تحديد موقعك...";
+  locationStatus.textContent = "جارٍ تحديد الموقع...";
+
   if (!navigator.geolocation) {
     handleLocationError();
     return;
@@ -170,6 +208,5 @@ function requestLocation() {
 }
 
 searchInput.addEventListener("input", applyFilters);
-locateBtn.addEventListener("click", requestLocation);
 
 requestLocation();
