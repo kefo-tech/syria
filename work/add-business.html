@@ -9,48 +9,52 @@
 <body>
   <div class="page-shell">
 
-    <header class="detail-header">
-      <div class="detail-header-inner">
-        <a href="index.html" class="back-link">← العودة للرئيسية</a>
+    <header class="fixed-top-wrap detail-top-wrap">
+      <div class="top-search-shell detail-shell">
+        <a href="index.html" class="back-link-btn">← العودة للرئيسية</a>
       </div>
     </header>
 
-    <main class="content">
-      <section class="placeholder-page">
-        <div class="placeholder-card">
-          <h1>صفحة إضافة متجر جديد</h1>
-          <p>
-            هذه الصفحة جاهزة مبدئيًا، وسنقوم لاحقًا بتصميم نموذج إضافة النشاط
-            وربطه بنظام المراجعة والموافقة قبل النشر.
-          </p>
-          <a href="index.html" class="primary-link-btn">العودة للرئيسية</a>
-        </div>
+    <main class="container page-content detail-page has-fixed-top">
+      <section class="glass-card add-placeholder-card">
+        <h1 class="store-detail-title">صفحة إضافة متجر جديد</h1>
+        <p class="store-detail-description">
+          هذه الصفحة جاهزة مؤقتًا، وسنقوم لاحقًا ببناء نموذج إضافة النشاط التجاري
+          وربطه بنظام المراجعة والموافقة قبل النشر.
+        </p>
+
+        <a href="index.html" class="primary-action-link">العودة للرئيسية</a>
       </section>
     </main>
 
-    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
+    <div class="fixed-bottom-wrap">
+      <div class="bottom-main-actions">
+        <a href="add-business.html" class="big-add-business-btn">＋ أضف عملك</a>
+      </div>
 
-    <footer class="site-footer">
-      <div class="footer-inner">
+      <div class="fixed-copyright">
         © KeFo.tech — جميع الحقوق محفوظة
       </div>
-    </footer>
+    </div>
 
   </div>
 
   <script>
-    // حماية من النسخ وزر اليمين
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("copy", e => e.preventDefault());
     document.addEventListener("cut", e => e.preventDefault());
     document.addEventListener("selectstart", e => e.preventDefault());
     document.addEventListener("dragstart", e => e.preventDefault());
 
-    let touchTimer;
-    document.addEventListener("touchstart", () => {
-      touchTimer = setTimeout(() => {}, 500);
-    }, { passive: true });
-    document.addEventListener("touchend", () => clearTimeout(touchTimer), { passive: true });
+    document.addEventListener("keydown", e => {
+      const key = e.key.toLowerCase();
+      if (
+        (e.ctrlKey && ["u", "c", "x", "s", "a"].includes(key)) ||
+        e.key === "F12"
+      ) {
+        e.preventDefault();
+      }
+    });
   </script>
 </body>
 </html>
