@@ -9,105 +9,106 @@
 <body>
   <div class="page-shell">
 
-    <header class="detail-header">
-      <div class="detail-header-inner">
-        <a href="index.html" class="back-link">← العودة للرئيسية</a>
+    <header class="fixed-top-wrap detail-top-wrap">
+      <div class="top-search-shell detail-shell">
+        <a href="index.html" class="back-link-btn">← العودة للرئيسية</a>
       </div>
     </header>
 
-    <main class="content store-page">
+    <main class="container page-content detail-page has-fixed-top">
       <section id="storeDetail"></section>
     </main>
 
-    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
+    <div class="fixed-bottom-wrap">
+      <div class="bottom-main-actions">
+        <a href="add-business.html" class="big-add-business-btn">＋ أضف عملك</a>
+      </div>
 
-    <footer class="site-footer">
-      <div class="footer-inner">
+      <div class="fixed-copyright">
         © KeFo.tech — جميع الحقوق محفوظة
       </div>
-    </footer>
+    </div>
 
   </div>
 
   <script src="js/data.js"></script>
   <script>
-    // حماية من النسخ وزر اليمين
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("copy", e => e.preventDefault());
     document.addEventListener("cut", e => e.preventDefault());
     document.addEventListener("selectstart", e => e.preventDefault());
     document.addEventListener("dragstart", e => e.preventDefault());
 
-    let touchTimer;
-    document.addEventListener("touchstart", () => {
-      touchTimer = setTimeout(() => {}, 500);
-    }, { passive: true });
-    document.addEventListener("touchend", () => clearTimeout(touchTimer), { passive: true });
+    document.addEventListener("keydown", e => {
+      const key = e.key.toLowerCase();
+      if (
+        (e.ctrlKey && ["u", "c", "x", "s", "a"].includes(key)) ||
+        e.key === "F12"
+      ) {
+        e.preventDefault();
+      }
+    });
 
     const params = new URLSearchParams(window.location.search);
     const storeId = params.get("id");
     const detailContainer = document.getElementById("storeDetail");
-
     const store = STORES.find(item => item.id === storeId);
+
+    function safeLink(value) {
+      return value ? value : "#";
+    }
 
     if (!store) {
       detailContainer.innerHTML = `
-        <div class="empty-card">
+        <div class="glass-card empty-card">
           <h2>المتجر غير موجود</h2>
-          <p>ربما تم حذف الرابط أو أن المعرف غير صحيح.</p>
-          <a href="index.html" class="primary-link-btn">العودة للرئيسية</a>
+          <p>الرابط غير صحيح أو أن المتجر لم يعد متاحًا.</p>
+          <a href="index.html" class="primary-action-link">العودة للرئيسية</a>
         </div>
       `;
     } else {
-      const mapsUrl = store.mapsLink || `https://www.google.com/maps?q=${store.lat},${store.lng}`;
+      const mapsUrl = store.mapsLink || \`https://www.google.com/maps?q=\${store.lat},\${store.lng}\`;
 
       detailContainer.innerHTML = `
-        <article class="store-detail-card">
-          <div class="detail-cover-wrap">
-            <img src="${store.cover}" alt="${store.name}" class="detail-cover" />
-            <div class="detail-overlay">
-              <span class="store-type-badge">${store.type}</span>
-            </div>
+        <article class="store-detail-card glass-card">
+          <div class="store-detail-cover-wrap">
+            <img src="${store.cover}" alt="${store.name}" class="store-detail-cover" />
+            <span class="store-detail-type">${store.type}</span>
           </div>
 
-          <div class="detail-body">
-            <div class="detail-title-row">
-              <div>
-                <h1 class="detail-title">${store.name}</h1>
-                <p class="detail-location">${store.city} - ${store.area}</p>
-              </div>
-            </div>
-
-            <p class="detail-description">${store.description}</p>
+          <div class="store-detail-body">
+            <h1 class="store-detail-title">${store.name}</h1>
+            <p class="store-detail-location">${store.city} - ${store.area}</p>
+            <p class="store-detail-description">${store.description}</p>
 
             <div class="detail-info-grid">
-              <div class="info-box">
+              <div class="detail-info-box">
                 <strong>العنوان</strong>
-                <span>${store.address}</span>
+                <span>${store.address || "غير محدد"}</span>
               </div>
 
-              <div class="info-box">
-                <strong>نوع الخدمة</strong>
-                <span>${store.type}</span>
+              <div class="detail-info-box">
+                <strong>الهاتف</strong>
+                <span>${store.phone || "غير متوفر"}</span>
               </div>
 
-              <div class="info-box">
+              <div class="detail-info-box">
                 <strong>أوقات العمل</strong>
                 <span>${store.hours || "غير محدد"}</span>
               </div>
 
-              <div class="info-box">
-                <strong>الهاتف</strong>
-                <span>${store.phone || "غير متوفر"}</span>
+              <div class="detail-info-box">
+                <strong>نوع الخدمة</strong>
+                <span>${store.type || "غير محدد"}</span>
               </div>
             </div>
 
-            <div class="contact-buttons">
-              ${store.phone ? `<a class="action-btn" href="tel:${store.phone}">اتصال</a>` : ""}
-              ${store.whatsapp ? `<a class="action-btn whatsapp" target="_blank" href="https://wa.me/${store.whatsapp}">واتساب</a>` : ""}
-              ${store.facebook ? `<a class="action-btn" target="_blank" href="${store.facebook}">فيسبوك</a>` : ""}
-              ${store.instagram ? `<a class="action-btn" target="_blank" href="${store.instagram}">إنستغرام</a>` : ""}
-              <a class="action-btn maps" target="_blank" href="${mapsUrl}">خرائط جوجل</a>
+            <div class="detail-actions">
+              ${store.phone ? `<a class="detail-action-btn" href="tel:${store.phone}">اتصال</a>` : ""}
+              ${store.whatsapp ? `<a class="detail-action-btn whatsapp-btn" target="_blank" href="https://wa.me/${store.whatsapp}">واتساب</a>` : ""}
+              ${store.facebook ? `<a class="detail-action-btn" target="_blank" href="${safeLink(store.facebook)}">فيسبوك</a>` : ""}
+              ${store.instagram ? `<a class="detail-action-btn" target="_blank" href="${safeLink(store.instagram)}">إنستغرام</a>` : ""}
+              <a class="detail-action-btn maps-btn" target="_blank" href="${mapsUrl}">خرائط جوجل</a>
             </div>
           </div>
         </article>
