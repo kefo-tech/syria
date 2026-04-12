@@ -1,4 +1,4 @@
-const CACHE_NAME = "kefo-syria-v20";
+const CACHE_NAME = "kefo-syria-v21";
 
 const URLS_TO_CACHE = [
   "/syria/",
@@ -16,8 +16,9 @@ const URLS_TO_CACHE = [
   "/syria/post/",
   "/syria/post/index.html",
   "/syria/map/",
-  "/syria/work/",
   "/syria/map/index.html"
+  "/syria/work/",
+  "/syria/work/index.html"
 ];
 
 self.addEventListener("install", (event) => {
