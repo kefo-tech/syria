@@ -10,30 +10,31 @@
   <div class="page-shell">
 
     <header class="hero">
-      <div class="hero-top">
-        <div>
-          <h1 class="site-title">منصة الأعمال المحلية</h1>
-          <p class="site-subtitle">اكتشف المتاجر والخدمات القريبة منك بسهولة</p>
+      <div class="hero-inner">
+        <div class="hero-top">
+          <div>
+            <h1 class="site-title">منصة الأعمال المحلية</h1>
+            <p class="site-subtitle">اكتشف المتاجر والخدمات القريبة منك بسهولة</p>
+          </div>
         </div>
-      </div>
 
-      <div class="search-wrap">
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="ابحث باسم المتجر أو نوع الخدمة أو المنطقة..."
-          autocomplete="off"
-        />
-      </div>
+        <div class="welcome-bar">
+          <span id="welcomeText">أهلاً بك...</span>
+        </div>
 
-      <div class="hero-actions">
-        <button id="locateBtn" class="secondary-btn">تحديث موقعي</button>
-        <a href="add-business.html" class="add-business-btn">＋ أضف عملك</a>
-      </div>
+        <div class="search-wrap">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="ابحث باسم المتجر أو نوع الخدمة أو المنطقة..."
+            autocomplete="off"
+          />
+        </div>
 
-      <div class="status-bar">
-        <span id="locationStatus">جارٍ تحديد موقعك...</span>
-        <span id="resultsCount">0 نتيجة</span>
+        <div class="status-bar">
+          <span id="locationStatus">جارٍ تحديد موقعك...</span>
+          <span id="resultsCount">0 نتيجة</span>
+        </div>
       </div>
     </header>
 
@@ -48,10 +49,12 @@
       <section id="emptyState" class="empty-state hidden">
         <div class="empty-card">
           <h3>لا توجد نتائج حالياً</h3>
-          <p>جرّب تعديل البحث أو تحديث الموقع.</p>
+          <p>جرّب تعديل البحث أو فعّل الموقع الجغرافي من جهازك.</p>
         </div>
       </section>
     </main>
+
+    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
 
     <footer class="site-footer">
       <div class="footer-inner">
