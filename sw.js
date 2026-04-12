@@ -16,6 +16,7 @@ const URLS_TO_CACHE = [
   "/syria/post/",
   "/syria/post/index.html",
   "/syria/map/",
+  "/syria/work/",
   "/syria/map/index.html"
 ];
 
