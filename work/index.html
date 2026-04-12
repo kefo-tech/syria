@@ -9,58 +9,52 @@
 <body>
   <div class="page-shell">
 
-    <header class="hero">
-      <div class="hero-inner">
-        <div class="hero-top">
-          <div>
-            <h1 class="site-title">منصة الأعمال المحلية</h1>
-            <p class="site-subtitle">اكتشف المتاجر والخدمات القريبة منك بسهولة</p>
-          </div>
-        </div>
+    <header class="fixed-top-wrap">
+      <div class="top-search-shell">
+        <div class="welcome-strip" id="welcomeText">أهلاً بك في: جارٍ تحديد موقعك...</div>
 
-        <div class="welcome-bar">
-          <span id="welcomeText">أهلاً بك...</span>
-        </div>
-
-        <div class="search-wrap">
+        <div class="search-bar-wrap">
           <input
             id="searchInput"
+            class="main-search-input"
             type="text"
             placeholder="ابحث باسم المتجر أو نوع الخدمة أو المنطقة..."
             autocomplete="off"
           />
         </div>
 
-        <div class="status-bar">
-          <span id="locationStatus">جارٍ تحديد موقعك...</span>
+        <div class="top-status-row">
+          <span id="locationStatus">جارٍ تحديد الموقع...</span>
           <span id="resultsCount">0 نتيجة</span>
         </div>
       </div>
     </header>
 
-    <main class="content">
-      <section class="section-head">
-        <h2>الأعمال القريبة منك</h2>
-        <p>يتم عرض النتائج ضمن نطاق 3 كم تلقائيًا من موقعك الحالي</p>
+    <main class="container page-content has-fixed-top">
+      <section class="section-title-wrap">
+        <h1 class="services-title">الأعمال القريبة منك</h1>
+        <p class="section-subtitle">النتائج تظهر تلقائيًا ضمن نطاق 3 كم من موقعك الحالي</p>
       </section>
 
       <section id="storesGrid" class="stores-grid"></section>
 
       <section id="emptyState" class="empty-state hidden">
-        <div class="empty-card">
+        <div class="glass-card empty-card">
           <h3>لا توجد نتائج حالياً</h3>
-          <p>جرّب تعديل البحث أو فعّل الموقع الجغرافي من جهازك.</p>
+          <p>جرّب البحث باسم آخر أو تأكد من تفعيل الموقع الجغرافي.</p>
         </div>
       </section>
     </main>
 
-    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
+    <div class="fixed-bottom-wrap">
+      <div class="bottom-main-actions">
+        <a href="add-business.html" class="big-add-business-btn">＋ أضف عملك</a>
+      </div>
 
-    <footer class="site-footer">
-      <div class="footer-inner">
+      <div class="fixed-copyright">
         © KeFo.tech — جميع الحقوق محفوظة
       </div>
-    </footer>
+    </div>
 
   </div>
 
