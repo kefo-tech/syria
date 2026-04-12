@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تفاصيل المتجر</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+
+    <header class="detail-header">
+      <a href="index.html" class="back-link">← العودة للرئيسية</a>
+    </header>
+
+    <main class="content store-page">
+      <section id="storeDetail"></section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        © KeFo.tech — جميع الحقوق محفوظة
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/data.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const storeId = params.get("id");
+    const detailContainer = document.getElementById("storeDetail");
+
+    const store = STORES.find(item => item.id === storeId);
+
+    if (!store) {
+      detailContainer.innerHTML = `
+        <div class="empty-card">
+          <h2>المتجر غير موجود</h2>
+          <p>ربما تم حذف الرابط أو أن المعرف غير صحيح.</p>
+          <a href="index.html" class="primary-link-btn">العودة للرئيسية</a>
+        </div>
+      `;
+    } else {
+      const mapsUrl = store.mapsLink || `https://www.google.com/maps?q=${store.lat},${store.lng}`;
+      detailContainer.innerHTML = `
+        <article class="store-detail-card">
+          <div class="detail-cover-wrap">
+            <img src="${store.cover}" alt="${store.name}" class="detail-cover" />
+            <div class="detail-overlay">
+              <span class="store-type-badge">${store.type}</span>
+            </div>
+          </div>
+
+          <div class="detail-body">
+            <div class="detail-title-row">
+              <div>
+                <h1 class="detail-title">${store.name}</h1>
+                <p class="detail-location">${store.city} - ${store.area}</p>
+              </div>
+            </div>
+
+            <p class="detail-description">${store.description}</p>
+
+            <div class="detail-info-grid">
+              <div class="info-box">
+                <strong>العنوان</strong>
+                <span>${store.address}</span>
+              </div>
+              <div class="info-box">
+                <strong>نوع الخدمة</strong>
+                <span>${store.type}</span>
+              </div>
+              <div class="info-box">
+                <strong>أوقات العمل</strong>
+                <span>${store.hours || "غير محدد"}</span>
+              </div>
+              <div class="info-box">
+                <strong>الهاتف</strong>
+                <span>${store.phone || "غير متوفر"}</span>
+              </div>
+            </div>
+
+            <div class="contact-buttons">
+              ${store.phone ? `<a class="action-btn" href="tel:${store.phone}">اتصال</a>` : ""}
+              ${store.whatsapp ? `<a class="action-btn whatsapp" target="_blank" href="https://wa.me/${store.whatsapp}">واتساب</a>` : ""}
+              ${store.facebook ? `<a class="action-btn" target="_blank" href="${store.facebook}">فيسبوك</a>` : ""}
+              ${store.instagram ? `<a class="action-btn" target="_blank" href="${store.instagram}">إنستغرام</a>` : ""}
+              <a class="action-btn maps" target="_blank" href="${mapsUrl}">خرائط جوجل</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+  </script>
+</body>
+</html>
