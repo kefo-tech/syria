@@ -5,7 +5,7 @@ const SERVICES = [
   { titleKey: "prayer", subKey: "prayerSub", href: "./salah/", icon: "prayer" },
   { titleKey: "posts", subKey: "postsSub", href: "./post/", icon: "posts" },
   { titleKey: "map", subKey: "mapSub", href: "./map/", icon: "car" },
-  { titleKey: "work", subKey: "workSub", href: "/work/", icon: "https://aburaghad.com/images/software/1653110414online-shop.png" },
+  { titleKey: "work", subKey: "workSub", href: "./work/", icon: "https://aburaghad.com/images/software/1653110414online-shop.png" },
   { titleKey: "coming", subKey: "comingSub2", href: "javascript:void(0)", icon: "box" },
   { titleKey: "coming", subKey: "comingSub3", href: "javascript:void(0)", icon: "settings" },
   { titleKey: "coming", subKey: "comingSub", href: "javascript:void(0)", icon: "globe" },
