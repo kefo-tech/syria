@@ -10,12 +10,16 @@
   <div class="page-shell">
 
     <header class="detail-header">
-      <a href="index.html" class="back-link">← العودة للرئيسية</a>
+      <div class="detail-header-inner">
+        <a href="index.html" class="back-link">← العودة للرئيسية</a>
+      </div>
     </header>
 
     <main class="content store-page">
       <section id="storeDetail"></section>
     </main>
+
+    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
 
     <footer class="site-footer">
       <div class="footer-inner">
@@ -27,6 +31,19 @@
 
   <script src="js/data.js"></script>
   <script>
+    // حماية من النسخ وزر اليمين
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("copy", e => e.preventDefault());
+    document.addEventListener("cut", e => e.preventDefault());
+    document.addEventListener("selectstart", e => e.preventDefault());
+    document.addEventListener("dragstart", e => e.preventDefault());
+
+    let touchTimer;
+    document.addEventListener("touchstart", () => {
+      touchTimer = setTimeout(() => {}, 500);
+    }, { passive: true });
+    document.addEventListener("touchend", () => clearTimeout(touchTimer), { passive: true });
+
     const params = new URLSearchParams(window.location.search);
     const storeId = params.get("id");
     const detailContainer = document.getElementById("storeDetail");
@@ -43,6 +60,7 @@
       `;
     } else {
       const mapsUrl = store.mapsLink || `https://www.google.com/maps?q=${store.lat},${store.lng}`;
+
       detailContainer.innerHTML = `
         <article class="store-detail-card">
           <div class="detail-cover-wrap">
@@ -67,14 +85,17 @@
                 <strong>العنوان</strong>
                 <span>${store.address}</span>
               </div>
+
               <div class="info-box">
                 <strong>نوع الخدمة</strong>
                 <span>${store.type}</span>
               </div>
+
               <div class="info-box">
                 <strong>أوقات العمل</strong>
                 <span>${store.hours || "غير محدد"}</span>
               </div>
+
               <div class="info-box">
                 <strong>الهاتف</strong>
                 <span>${store.phone || "غير متوفر"}</span>
