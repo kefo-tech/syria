@@ -10,7 +10,9 @@
   <div class="page-shell">
 
     <header class="detail-header">
-      <a href="index.html" class="back-link">← العودة للرئيسية</a>
+      <div class="detail-header-inner">
+        <a href="index.html" class="back-link">← العودة للرئيسية</a>
+      </div>
     </header>
 
     <main class="content">
@@ -19,12 +21,14 @@
           <h1>صفحة إضافة متجر جديد</h1>
           <p>
             هذه الصفحة جاهزة مبدئيًا، وسنقوم لاحقًا بتصميم نموذج إضافة النشاط
-            وربطه بالمراجعة والموافقة قبل النشر.
+            وربطه بنظام المراجعة والموافقة قبل النشر.
           </p>
           <a href="index.html" class="primary-link-btn">العودة للرئيسية</a>
         </div>
       </section>
     </main>
+
+    <a href="add-business.html" class="floating-add-btn">＋ أضف عملك</a>
 
     <footer class="site-footer">
       <div class="footer-inner">
@@ -33,5 +37,20 @@
     </footer>
 
   </div>
+
+  <script>
+    // حماية من النسخ وزر اليمين
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("copy", e => e.preventDefault());
+    document.addEventListener("cut", e => e.preventDefault());
+    document.addEventListener("selectstart", e => e.preventDefault());
+    document.addEventListener("dragstart", e => e.preventDefault());
+
+    let touchTimer;
+    document.addEventListener("touchstart", () => {
+      touchTimer = setTimeout(() => {}, 500);
+    }, { passive: true });
+    document.addEventListener("touchend", () => clearTimeout(touchTimer), { passive: true });
+  </script>
 </body>
 </html>
